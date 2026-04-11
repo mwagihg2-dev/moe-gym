@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="نادي مو">
+<meta name="apple-mobile-web-app-title" content="MoeGym">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0c10">
-<title>خطة مو — النادي المنزلي</title>
+<title>MoeGym</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -23,20 +25,53 @@
   --red: #e84040;
   --text: #f0f2f7;
   --muted: #7a8194;
-  --font: 'Tajawal', sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font);
+  font-family: 'Tajawal', sans-serif;
   font-size: 15px;
   line-height: 1.7;
   min-height: 100vh;
+  padding-bottom: calc(70px + env(safe-area-inset-bottom));
 }
 
-/* NAV */
-nav {
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(17,19,24,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bnav-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 10px 4px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: color 0.15s;
+}
+.bnav-btn .icon { font-size: 20px; line-height: 1; }
+.bnav-btn.active { color: var(--accent); }
+
+/* TOP BAR */
+.topbar {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -44,1000 +79,1102 @@ nav {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: 0 1rem;
+  padding: calc(env(safe-area-inset-top) + 12px) 1.25rem 12px;
   display: flex;
   align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-top: env(safe-area-inset-top);
+  justify-content: space-between;
 }
-nav::-webkit-scrollbar { display: none; }
-.nav-brand {
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--accent);
-  padding: 1rem 1.5rem 1rem 0;
-  border-left: 1px solid var(--border);
-  margin-left: 1rem;
-  white-space: nowrap;
-  letter-spacing: -0.02em;
-}
-.nav-btn {
-  background: none;
-  border: none;
-  -webkit-appearance: none;
-  color: var(--muted);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 500;
-  padding: 1rem 0.85rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color 0.2s;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.nav-btn:hover { color: var(--text); }
-.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.topbar-title { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+.topbar-title span { color: var(--accent); }
+.topbar-date { font-size: 12px; color: var(--muted); }
 
 /* SECTIONS */
-.section { display: none; padding: 2rem 1.5rem; max-width: 900px; margin: 0 auto; }
+.section { display: none; padding: 1.25rem; max-width: 700px; margin: 0 auto; }
 .section.active { display: block; }
-
-/* HERO */
-.hero {
-  background: linear-gradient(135deg, #0d1829 0%, #111318 60%, #160d24 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -60px; left: -60px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(79,142,247,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-title {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 6px;
-}
-.hero-title span { color: var(--accent); }
-.hero-sub { color: var(--muted); font-size: 14px; }
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 1.5rem;
-}
-@media(max-width:600px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
-.stat {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  text-align: center;
-}
-.stat-val { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
-.stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
 /* CARDS */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin-bottom: 1rem;
+  border-radius: 14px;
+  padding: 1.1rem;
+  margin-bottom: 12px;
 }
 .card-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 1rem;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-.card-title .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-/* WEEK GRID */
-.week-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-@media(max-width:500px) { .week-grid { grid-template-columns: 1fr; } }
-.day-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1rem;
-}
-.day-card.rest {
-  border-color: rgba(122,129,148,0.2);
-  opacity: 0.6;
-}
-.day-card.active-day { border-color: rgba(79,142,247,0.3); }
-.day-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-.day-card.rest .day-name { color: var(--muted); }
-.day-focus {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--text);
-}
-.exercise-list { list-style: none; }
-.exercise-list li {
-  font-size: 13px;
-  color: var(--muted);
-  padding: 4px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex;
   justify-content: space-between;
-  align-items: center;
 }
-.exercise-list li:last-child { border-bottom: none; }
-.ex-name { color: var(--text); font-weight: 500; }
-.ex-sets {
-  background: rgba(79,142,247,0.12);
-  color: var(--accent);
-  border-radius: 4px;
-  padding: 1px 7px;
-  font-size: 11px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* NUTRITION */
-.macro-row {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
-  margin-bottom: 1rem;
-}
-@media(max-width:480px) { .macro-row { grid-template-columns: 1fr; } }
-.macro-card {
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 1rem;
-  text-align: center;
-  border: 1px solid var(--border);
-}
-.macro-val { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
-.macro-lbl { font-size: 12px; color: var(--muted); margin-top: 3px; }
-.macro-sub { font-size: 11px; color: var(--muted); }
-.meal-item {
-  background: var(--surface2);
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-  border: 1px solid var(--border);
-}
-.meal-time {
-  font-size: 11px;
-  color: var(--accent);
-  font-weight: 700;
-  white-space: nowrap;
-  background: rgba(79,142,247,0.1);
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-top: 2px;
-}
-.meal-name { font-weight: 600; font-size: 14px; }
-.meal-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.meal-cals {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--green);
-  white-space: nowrap;
-}
-
-/* SUPPLEMENTS */
-.supp-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--surface2);
-  border-radius: 10px;
-  margin-bottom: 8px;
-  border: 1px solid var(--border);
-}
-.supp-icon {
-  width: 40px; height: 40px;
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
+.section-title {
   font-size: 18px;
-  flex-shrink: 0;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
 }
-.supp-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
-.supp-dose { font-size: 12px; color: var(--accent); font-weight: 600; }
-.supp-time { font-size: 12px; color: var(--muted); }
-.supp-note { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.section-title span { color: var(--accent); }
 
-/* WATER */
-.water-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.water-item {
+/* CHECKLIST */
+.check-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 1rem;
-  background: var(--surface2);
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
   font-size: 13px;
 }
-.water-time {
-  min-width: 70px;
-  font-weight: 700;
-  color: #4fc3f7;
-  font-size: 12px;
+.check-item.done .check-box {
+  background: var(--green);
+  border-color: var(--green);
 }
-.water-amount {
-  background: rgba(79,195,247,0.1);
-  color: #4fc3f7;
-  border-radius: 4px;
-  padding: 2px 8px;
+.check-item.done .check-label { text-decoration: line-through; color: var(--muted); }
+.check-label { font-size: 14px; font-weight: 500; flex: 1; }
+.check-sub { font-size: 11px; color: var(--muted); }
+.yt-link {
+  background: rgba(255,0,0,0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
   font-size: 11px;
-  font-weight: 700;
+  color: #ff6b6b;
+  text-decoration: none;
   white-space: nowrap;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
 }
-.water-note { color: var(--muted); flex: 1; }
 
-/* SAFETY */
-.safety-item {
+/* PROGRESS BAR */
+.progress-wrap { margin-bottom: 12px; }
+.progress-label {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--surface2);
-  border-radius: 10px;
-  margin-bottom: 8px;
-  border-right: 3px solid var(--red);
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 5px;
 }
-.safety-item.warn { border-right-color: var(--amber); }
-.safety-item.ok { border-right-color: var(--green); }
-.safety-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-.safety-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
-.safety-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-/* PROGRESS */
 .progress-bar {
+  height: 6px;
   background: var(--surface2);
   border-radius: 99px;
-  height: 6px;
-  margin-top: 6px;
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
   border-radius: 99px;
   background: linear-gradient(to left, var(--accent), var(--accent2));
+  transition: width 0.4s ease;
+}
+.progress-fill.green { background: linear-gradient(to left, var(--green), #1a9e63); }
+.progress-fill.amber { background: linear-gradient(to left, var(--amber), #c47d0a); }
+
+/* STATS INPUT */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.stat-input-wrap { display: flex; flex-direction: column; gap: 5px; }
+.stat-input-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.stat-input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  width: 100%;
+  -webkit-appearance: none;
+}
+.stat-input:focus { outline: none; border-color: var(--accent); }
+.stat-input::placeholder { color: var(--muted); font-weight: 400; }
+
+/* BUTTONS */
+.btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: opacity 0.15s;
+}
+.btn:active { opacity: 0.8; }
+.btn.secondary {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
-/* BADGES */
+/* METRIC CARDS */
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.metric {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.metric-val { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+.metric-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* WORKOUT LOG */
+.log-item {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.log-name { font-size: 13px; font-weight: 600; }
+.log-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.log-weight { font-size: 15px; font-weight: 800; color: var(--accent); }
+
+/* TABS */
+.tabs {
+  display: flex;
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 14px;
+}
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.15s;
+}
+.tab-btn.active {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* BADGE */
 .badge {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 2px 8px;
   border-radius: 99px;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
 }
 .badge-green { background: rgba(46,204,138,0.15); color: var(--green); }
 .badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); }
-.badge-red { background: rgba(232,64,64,0.15); color: var(--red); }
 .badge-blue { background: rgba(79,142,247,0.15); color: var(--accent); }
 
-/* TIMELINE */
-.phase-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: relative;
-  padding-right: 1.5rem;
-}
-.phase-timeline::before {
-  content: '';
-  position: absolute;
-  right: 0; top: 12px; bottom: 12px;
-  width: 2px;
-  background: var(--border);
-}
-.phase-item {
-  padding: 1rem 1.5rem 1rem 0;
-  position: relative;
-}
-.phase-item::before {
-  content: '';
-  position: absolute;
-  right: -5px; top: 16px;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--accent2);
-  border: 2px solid var(--bg);
-}
-.phase-num {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 4px;
-}
-.phase-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-.phase-desc { font-size: 13px; color: var(--muted); }
+/* CHART */
+.chart-wrap { position: relative; width: 100%; height: 200px; margin-top: 8px; }
 
-/* DIVIDER */
-.divider {
-  height: 1px;
-  background: var(--border);
-  margin: 1.5rem 0;
-}
-
-.section-header {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
-  color: var(--text);
-}
-.section-header span { color: var(--accent); }
-
-.tip-box {
-  background: rgba(79,142,247,0.07);
-  border: 1px solid rgba(79,142,247,0.2);
-  border-radius: 10px;
-  padding: 1rem;
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: calc(75px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 99px;
   font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 1rem;
-  line-height: 1.7;
+  font-weight: 700;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
 }
-.tip-box strong { color: var(--accent); }
+.toast.show { opacity: 1; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0d1829, #111318 60%, #160d24);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 12px;
+}
+.hero-name { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 4px; }
+.hero-name span { color: var(--accent); }
+.hero-sub { font-size: 13px; color: var(--muted); }
+
+/* PHASE */
+.phase-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.phase-item:last-child { border-bottom: none; }
+.phase-num { font-size: 10px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.phase-title { font-size: 14px; font-weight: 700; }
+.phase-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* SUPP ITEM */
+.supp-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.supp-item:last-child { border-bottom: none; }
+.supp-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.supp-name { font-size: 14px; font-weight: 700; }
+.supp-dose { font-size: 12px; color: var(--accent); font-weight: 600; }
+.supp-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* SAFETY */
+.safety-item {
+  padding: 10px 0 10px 12px;
+  border-bottom: 1px solid var(--border);
+  border-right: 3px solid var(--red);
+  margin-bottom: 8px;
+  border-radius: 0 8px 8px 0;
+}
+.safety-item.warn { border-right-color: var(--amber); }
+.safety-item.ok { border-right-color: var(--green); }
+.safety-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.safety-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* DAY SELECTOR */
+.day-selector {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: 14px;
+  padding-bottom: 2px;
+}
+.day-selector::-webkit-scrollbar { display: none; }
+.day-pill {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.15s;
+}
+.day-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 2rem 0;
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-brand">نادي مو</div>
-  <button class="nav-btn active" onclick="show('overview', this)">نظرة عامة</button>
-  <button class="nav-btn" onclick="show('training', this)">التمارين</button>
-  <button class="nav-btn" onclick="show('nutrition', this)">التغذية</button>
-  <button class="nav-btn" onclick="show('supplements', this)">السبلمنتس</button>
-  <button class="nav-btn" onclick="show('water', this)">الماء</button>
-  <button class="nav-btn" onclick="show('safety', this)">السلامة</button>
-</nav>
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="topbar-title">Moe<span>Gym</span></div>
+    <div class="topbar-date" id="today-date"></div>
+  </div>
+  <div id="streak-badge" class="badge badge-amber" style="font-size:12px;padding:5px 10px;"></div>
+</div>
 
-<!-- OVERVIEW -->
-<div id="overview" class="section active">
+<!-- SECTIONS -->
+
+<!-- HOME -->
+<div id="sec-home" class="section active">
   <div class="hero">
-    <div class="hero-title">خطة <span>مو</span> — النادي المنزلي</div>
-    <div class="hero-sub">مبتدئ · 26–32 سنة · 80–95 كيلو · هدف: جسم ضخم ومحدد</div>
-    <div class="stats-row">
-      <div class="stat"><div class="stat-val">18</div><div class="stat-lbl">شهر للهدف الكامل</div></div>
-      <div class="stat"><div class="stat-val">4</div><div class="stat-lbl">أيام تمرين أسبوعياً</div></div>
-      <div class="stat"><div class="stat-val">12–16%</div><div class="stat-lbl">نسبة الدهون المستهدفة</div></div>
-      <div class="stat"><div class="stat-val">~1,800</div><div class="stat-lbl">سعرة حرارية يومياً</div></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="dot"></span>خارطة الطريق</div>
-    <div class="phase-timeline">
-      <div class="phase-item">
-        <div class="phase-num">المرحلة 1 — الشهر 1 إلى 3</div>
-        <div class="phase-title">الأساس والتعلم</div>
-        <div class="phase-desc">تعلّم الحركة الصحيحة، كارديو 4× أسبوع، مقاومة خفيفة. خسارة 4–6 كيلو دهون، بناء 1–2 كيلو عضل.</div>
+    <div class="hero-name">يا هلا <span>مو</span> 💪</div>
+    <div class="hero-sub">وزنك الحالي · نسبة الدهون · التقدم</div>
+    <div class="metric-row" style="margin-top:12px;margin-bottom:0;">
+      <div class="metric">
+        <div class="metric-val" id="latest-weight" style="color:var(--accent);">—</div>
+        <div class="metric-lbl">الوزن كيلو</div>
       </div>
-      <div class="phase-item">
-        <div class="phase-num">المرحلة 2 — الشهر 4 إلى 9</div>
-        <div class="phase-title">البناء والتضخيم</div>
-        <div class="phase-desc">زيادة الأوزان تدريجياً، بروتين مرتفع. خسارة 6–10 كيلو دهون، بناء 3–5 كيلو عضل. الجسم يبدأ يتشكّل.</div>
+      <div class="metric">
+        <div class="metric-val" id="latest-fat" style="color:var(--amber);">—</div>
+        <div class="metric-lbl">دهون %</div>
       </div>
-      <div class="phase-item">
-        <div class="phase-num">المرحلة 3 — الشهر 10 إلى 18</div>
-        <div class="phase-title">التحديد والضخامة</div>
-        <div class="phase-desc">دهون الجسم 12–16%، صدر وظهر وأكتاف واضحة. الوزن المستهدف 75–85 كيلو من عضل ولياقة.</div>
+      <div class="metric">
+        <div class="metric-val" id="latest-muscle" style="color:var(--green);">—</div>
+        <div class="metric-lbl">عضل %</div>
       </div>
     </div>
   </div>
 
+  <!-- Today Progress -->
   <div class="card">
-    <div class="card-title"><span class="dot"></span>القواعد الثلاث الذهبية</div>
-    <div class="safety-item ok">
-      <div class="safety-icon">💪</div>
-      <div><div class="safety-title">الانتظام فوق كل شيء</div><div class="safety-desc">تمرين متوسط 4 أيام كل أسبوع أفضل بكثير من تمرين مثالي 3 أيام ثم انقطاع أسبوع. الاستمرارية هي المتغير الأكبر.</div></div>
+    <div class="card-title">تقدم اليوم</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>التمارين</span><span id="prog-ex">0/0</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="fill-ex" style="width:0%"></div></div>
     </div>
-    <div class="safety-item ok">
-      <div class="safety-icon">🍗</div>
-      <div><div class="safety-title">البروتين هو الأساس</div><div class="safety-desc">130–160 غرام بروتين يومياً. بدون هذا الرقم لن تبني عضلاً بغض النظر عن التمرين.</div></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>الوجبات</span><span id="prog-meal">0/0</span></div>
+      <div class="progress-bar"><div class="progress-fill green" id="fill-meal" style="width:0%"></div></div>
     </div>
-    <div class="safety-item ok">
-      <div class="safety-icon">😴</div>
-      <div><div class="safety-title">النوم هو التمرين الحقيقي</div><div class="safety-desc">العضل يُبنى أثناء النوم لا أثناء التمرين. 7–8 ساعات إلزامية. النوم أقل من 6 ساعات يُلغي 40% من نتائج التمرين.</div></div>
+    <div class="progress-wrap" style="margin-bottom:0">
+      <div class="progress-label"><span>السبلمنتس</span><span id="prog-supp">0/0</span></div>
+      <div class="progress-bar"><div class="progress-fill amber" id="fill-supp" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Log Stats -->
+  <div class="card">
+    <div class="card-title">سجّل قياسات اليوم</div>
+    <div class="stats-grid">
+      <div class="stat-input-wrap">
+        <div class="stat-input-label">الوزن (كيلو)</div>
+        <input class="stat-input" id="inp-weight" type="number" step="0.1" placeholder="85.5">
+      </div>
+      <div class="stat-input-wrap">
+        <div class="stat-input-label">دهون الجسم %</div>
+        <input class="stat-input" id="inp-fat" type="number" step="0.1" placeholder="22.5">
+      </div>
+      <div class="stat-input-wrap">
+        <div class="stat-input-label">كتلة العضل %</div>
+        <input class="stat-input" id="inp-muscle" type="number" step="0.1" placeholder="38.0">
+      </div>
+      <div class="stat-input-wrap">
+        <div class="stat-input-label">ملاحظة</div>
+        <input class="stat-input" id="inp-note" type="text" placeholder="شعرت بطاقة عالية">
+      </div>
+    </div>
+    <button class="btn" onclick="saveStats()">حفظ القياسات</button>
+  </div>
+
+  <!-- Road map -->
+  <div class="card">
+    <div class="card-title">خارطة الطريق</div>
+    <div class="phase-item">
+      <div class="phase-num">الشهر 1–3</div>
+      <div class="phase-title">الأساس والتعلم</div>
+      <div class="phase-desc">كارديو 4× أسبوع · مقاومة خفيفة · خسارة 4–6 كيلو دهون</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">الشهر 4–9</div>
+      <div class="phase-title">البناء والتضخيم</div>
+      <div class="phase-desc">زيادة الأوزان تدريجياً · بروتين مرتفع · الجسم يتشكّل</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">الشهر 10–18</div>
+      <div class="phase-title">التحديد والضخامة</div>
+      <div class="phase-desc">دهون 12–16% · صدر وظهر وأكتاف واضحة</div>
     </div>
   </div>
 </div>
 
 <!-- TRAINING -->
-<div id="training" class="section">
-  <div class="section-header">جدول <span>التمارين</span></div>
+<div id="sec-training" class="section">
+  <div class="section-title">تمارين <span>اليوم</span></div>
 
-  <div class="tip-box">
-    <strong>الأسابيع 1–4:</strong> ركّز على الحركة الصحيحة وليس على الوزن. خفّف الأوزان 40% من قدرتك القصوى. بعد الشهر الأول ابدأ بزيادة الوزن تدريجياً.
-  </div>
+  <div class="day-selector" id="day-selector"></div>
 
-  <div class="week-grid">
-    <!-- DAY 1 -->
-    <div class="day-card active-day">
-      <div class="day-name">اليوم الأول — الأحد</div>
-      <div class="day-focus">صدر + تراي</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">إحماء على الـ Treadmill</span><span class="ex-sets">10 دقيقة</span></li>
-        <li><span class="ex-name">Dumbbell Chest Press (بنش)</span><span class="ex-sets">4 × 10</span></li>
-        <li><span class="ex-name">Push Up على Power Tower</span><span class="ex-sets">3 × 12</span></li>
-        <li><span class="ex-name">Dumbbell Incline Press</span><span class="ex-sets">3 × 10</span></li>
-        <li><span class="ex-name">Chest Dip على Power Tower</span><span class="ex-sets">3 × 8</span></li>
-        <li><span class="ex-name">Overhead Tricep Extension (دمبلز)</span><span class="ex-sets">3 × 12</span></li>
-        <li><span class="ex-name">Tricep Dip ضيق</span><span class="ex-sets">3 × 10</span></li>
-        <li><span class="ex-name">Treadmill كارديو ختامي</span><span class="ex-sets">15 دقيقة</span></li>
-      </ul>
+  <div class="card" id="training-card">
+    <div class="card-title">
+      <span id="training-day-title">اختر اليوم</span>
+      <span id="training-progress-badge" class="badge badge-blue"></span>
     </div>
-
-    <!-- DAY 2 -->
-    <div class="day-card active-day">
-      <div class="day-name">اليوم الثاني — الثلاثاء</div>
-      <div class="day-focus">ظهر + باي</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">إحماء Treadmill</span><span class="ex-sets">10 دقيقة</span></li>
-        <li><span class="ex-name">Pull Up على Power Tower</span><span class="ex-sets">4 × max</span></li>
-        <li><span class="ex-name">Dumbbell Bent Over Row</span><span class="ex-sets">4 × 10</span></li>
-        <li><span class="ex-name">EZ Bar Curl</span><span class="ex-sets">4 × 10</span></li>
-        <li><span class="ex-name">Inverted Row على Power Tower</span><span class="ex-sets">3 × 10</span></li>
-        <li><span class="ex-name">Hammer Curl دمبلز</span><span class="ex-sets">3 × 12</span></li>
-        <li><span class="ex-name">Resistance Band Pull Apart</span><span class="ex-sets">3 × 15</span></li>
-        <li><span class="ex-name">Treadmill كارديو</span><span class="ex-sets">15 دقيقة</span></li>
-      </ul>
-    </div>
-
-    <!-- DAY 3 REST -->
-    <div class="day-card rest">
-      <div class="day-name">الأربعاء</div>
-      <div class="day-focus">راحة نشطة</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">مشي خفيف 20–30 دقيقة</span><span class="ex-sets">اختياري</span></li>
-        <li><span class="ex-name">تمدد وإطالة</span><span class="ex-sets">10 دقيقة</span></li>
-      </ul>
-    </div>
-
-    <!-- DAY 4 -->
-    <div class="day-card active-day">
-      <div class="day-name">اليوم الثالث — الخميس</div>
-      <div class="day-focus">أكتاف + بطن</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">إحماء Treadmill</span><span class="ex-sets">10 دقيقة</span></li>
-        <li><span class="ex-name">Dumbbell Shoulder Press</span><span class="ex-sets">4 × 10</span></li>
-        <li><span class="ex-name">Lateral Raise دمبلز</span><span class="ex-sets">3 × 15</span></li>
-        <li><span class="ex-name">Front Raise دمبلز</span><span class="ex-sets">3 × 12</span></li>
-        <li><span class="ex-name">Knee Raise على Power Tower</span><span class="ex-sets">4 × 15</span></li>
-        <li><span class="ex-name">Ab Roller عجلة البطن</span><span class="ex-sets">3 × 8</span></li>
-        <li><span class="ex-name">Resistance Band Face Pull</span><span class="ex-sets">3 × 15</span></li>
-        <li><span class="ex-name">Treadmill HIIT</span><span class="ex-sets">20 دقيقة</span></li>
-      </ul>
-    </div>
-
-    <!-- DAY 5 REST -->
-    <div class="day-card rest">
-      <div class="day-name">الجمعة</div>
-      <div class="day-focus">راحة</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">راحة كاملة</span><span class="ex-sets">—</span></li>
-      </ul>
-    </div>
-
-    <!-- DAY 6 -->
-    <div class="day-card active-day">
-      <div class="day-name">اليوم الرابع — السبت</div>
-      <div class="day-focus">فخوذ + جسم كامل</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">Treadmill إحماء + Incline</span><span class="ex-sets">10 دقيقة</span></li>
-        <li><span class="ex-name">Dumbbell Squat</span><span class="ex-sets">4 × 12</span></li>
-        <li><span class="ex-name">Bulgarian Split Squat</span><span class="ex-sets">3 × 10 لكل رجل</span></li>
-        <li><span class="ex-name">Dumbbell Lunge</span><span class="ex-sets">3 × 12</span></li>
-        <li><span class="ex-name">Resistance Band Glute Kickback</span><span class="ex-sets">3 × 15</span></li>
-        <li><span class="ex-name">Burpees</span><span class="ex-sets">3 × 10</span></li>
-        <li><span class="ex-name">Ab Roller + Push Up</span><span class="ex-sets">3 × 10</span></li>
-        <li><span class="ex-name">Treadmill كارديو</span><span class="ex-sets">20 دقيقة</span></li>
-      </ul>
-    </div>
-
-    <!-- DAY 7 REST -->
-    <div class="day-card rest">
-      <div class="day-name">الأحد</div>
-      <div class="day-focus">راحة</div>
-      <ul class="exercise-list">
-        <li><span class="ex-name">راحة كاملة</span><span class="ex-sets">—</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="card">
-    <div class="card-title"><span class="dot"></span>قاعدة التقدم</div>
-    <div class="safety-item warn">
-      <div class="safety-icon">📈</div>
-      <div><div class="safety-title">Progressive Overload</div><div class="safety-desc">كل أسبوعين، زد إما التكرارات بـ 2 أو الوزن بـ 1.25–2.5 كيلو. لو ما زاد الحمل، ما زادت العضلة. هذه القاعدة الوحيدة التي لا تتفاوض عليها.</div></div>
-    </div>
-    <div class="safety-item ok">
-      <div class="safety-icon">⏱️</div>
-      <div><div class="safety-title">وقت الراحة بين السيتات</div><div class="safety-desc">تمارين القوة (Compound): 90–120 ثانية. تمارين العزل (Isolation): 45–60 ثانية. الكارديو: بدون راحة.</div></div>
-    </div>
+    <div id="training-list"></div>
   </div>
 </div>
 
 <!-- NUTRITION -->
-<div id="nutrition" class="section">
-  <div class="section-header">خطة <span>التغذية</span></div>
-
-  <div class="macro-row">
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--accent);">1,800</div>
-      <div class="macro-lbl">سعرة حرارية يومياً</div>
-      <div class="macro-sub">أيام التمرين</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--green);">150g</div>
-      <div class="macro-lbl">بروتين</div>
-      <div class="macro-sub">33% من السعرات</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--amber);">180g</div>
-      <div class="macro-lbl">كارب</div>
-      <div class="macro-sub">40% من السعرات</div>
-    </div>
-  </div>
-  <div class="macro-row">
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--red);">60g</div>
-      <div class="macro-lbl">دهون صحية</div>
-      <div class="macro-sub">30% من السعرات</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--accent2);">1,600</div>
-      <div class="macro-lbl">سعرة أيام الراحة</div>
-      <div class="macro-sub">تخفيض خفيف</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color: var(--muted);">25g+</div>
-      <div class="macro-lbl">ألياف</div>
-      <div class="macro-sub">هضم وشبع</div>
-    </div>
-  </div>
+<div id="sec-nutrition" class="section">
+  <div class="section-title">وجبات <span>اليوم</span></div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>توزيع الوجبات اليومي</div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">7:00 صباحاً</div>
-        <div class="meal-name">وجبة الإفطار</div>
-        <div class="meal-desc">3 بيضات مسلوقة أو مقلية بزيت زيتون + شوفان بالحليب + موزة</div>
+    <div class="card-title">الماكرو اليومي</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val" style="color:var(--accent);">1800</div>
+        <div class="metric-lbl">سعرة</div>
       </div>
-      <div class="meal-cals">~450 كالوري</div>
-    </div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">10:30 صباحاً</div>
-        <div class="meal-name">وجبة خفيفة</div>
-        <div class="meal-desc">زبادي يوناني + حفنة مكسرات (لوز أو جوز)</div>
+      <div class="metric">
+        <div class="metric-val" style="color:var(--green);">150g</div>
+        <div class="metric-lbl">بروتين</div>
       </div>
-      <div class="meal-cals">~250 كالوري</div>
-    </div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">1:00 ظهراً</div>
-        <div class="meal-name">الغداء</div>
-        <div class="meal-desc">150g صدر دجاج مشوي + أرز بني 1 كوب + سلطة خضراء بزيت زيتون</div>
-      </div>
-      <div class="meal-cals">~550 كالوري</div>
-    </div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">30 دقيقة قبل التمرين</div>
-        <div class="meal-name">وجبة ما قبل التمرين</div>
-        <div class="meal-desc">موزة + شوفان خفيف أو تمرة 2–3 حبات</div>
-      </div>
-      <div class="meal-cals">~150 كالوري</div>
-    </div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">بعد التمرين مباشرة</div>
-        <div class="meal-name">وجبة ما بعد التمرين</div>
-        <div class="meal-desc">Whey Protein سكوب + موزة أو عصير طبيعي</div>
-      </div>
-      <div class="meal-cals">~200 كالوري</div>
-    </div>
-
-    <div class="meal-item">
-      <div>
-        <div class="meal-time">7:00 مساءً</div>
-        <div class="meal-name">العشاء</div>
-        <div class="meal-desc">سمك مشوي أو صدر دجاج + خضروات مطبوخة + قطعة خبز أسمر</div>
-      </div>
-      <div class="meal-cals">~400 كالوري</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="dot"></span>أفضل مصادر البروتين في جدة</div>
-    <div style="display:grid; grid-template-columns: repeat(2,1fr); gap:8px;">
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">صدر الدجاج</div>
-        <div style="color:var(--muted);">31g بروتين لكل 100g — الأرخص والأفضل</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">البيض</div>
-        <div style="color:var(--muted);">6g بروتين لكل بيضة — سهل ورخيص</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">التونة</div>
-        <div style="color:var(--muted);">25g بروتين لكل 100g — وجبة سريعة</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">الزبادي اليوناني</div>
-        <div style="color:var(--muted);">10g بروتين لكل 100g + بروبيوتيك</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">سمك الهامور</div>
-        <div style="color:var(--muted);">24g بروتين لكل 100g + أوميغا 3</div>
-      </div>
-      <div style="background:var(--surface2);border-radius:8px;padding:10px;border:1px solid var(--border);font-size:13px;">
-        <div style="font-weight:700;margin-bottom:4px;">الجبن القريش</div>
-        <div style="color:var(--muted);">12g بروتين لكل 100g — ممتاز للسحور</div>
+      <div class="metric">
+        <div class="metric-val" style="color:var(--amber);">180g</div>
+        <div class="metric-lbl">كارب</div>
       </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>ما تأكله وما تتجنبه</div>
-    <div class="safety-item ok">
-      <div class="safety-icon">✅</div>
-      <div><div class="safety-title">الأكل المسموح</div><div class="safety-desc">أرز بني، شوفان، خبز أسمر، دجاج، سمك، بيض، زبادي يوناني، مكسرات، زيت زيتون، خضروات، فواكه طازجة، تمر.</div></div>
+    <div class="card-title">
+      <span>الوجبات</span>
+      <span id="meal-prog-badge" class="badge badge-green"></span>
     </div>
-    <div class="safety-item warn">
-      <div class="safety-icon">⚠️</div>
-      <div><div class="safety-title">قلّل منها</div><div class="safety-desc">الأرز الأبيض والخبز الأبيض والعصائر المعلبة. مقبولة بكميات صغيرة بعد التمرين.</div></div>
-    </div>
-    <div class="safety-item" style="border-right-color: var(--red);">
-      <div class="safety-icon">❌</div>
-      <div><div class="safety-title">تجنّب تماماً</div><div class="safety-desc">المشروبات الغازية، الوجبات السريعة، الحلويات اليومية، المقليات، الدهون المتحولة.</div></div>
+    <div id="meal-list"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">أفضل مصادر البروتين</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>سمك الهامور</b><div style="color:var(--muted)">24g / 100g</div></div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الجبن القريش</b><div style="color:var(--muted)">12g / 100g</div></div>
     </div>
   </div>
 </div>
 
 <!-- SUPPLEMENTS -->
-<div id="supplements" class="section">
-  <div class="section-header"><span>السبلمنتس</span> وتوقيتها</div>
+<div id="sec-supplements" class="section">
+  <div class="section-title"><span>السبلمنتس</span></div>
 
-  <div class="tip-box">
-    <strong>القاعدة:</strong> السبلمنتس تُكمل الأكل — لا تعوّضه. لو أكلك ضعيف، الواي بروتين لن يصنع معجزة.
+  <div class="card">
+    <div class="card-title">
+      <span>تشيك ليست اليوم</span>
+      <span id="supp-prog-badge" class="badge badge-amber"></span>
+    </div>
+    <div id="supp-list"></div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>الإلزامي</div>
-
+    <div class="card-title">معلومات السبلمنتس</div>
     <div class="supp-item">
-      <div class="supp-icon" style="background:rgba(79,142,247,0.1);">🥛</div>
-      <div style="flex:1">
+      <div class="supp-icon">🥛</div>
+      <div>
         <div class="supp-name">Whey Protein — Gold Standard</div>
-        <div class="supp-dose">1 سكوب = 24–25g بروتين</div>
-        <div class="supp-time">⏰ بعد التمرين مباشرة — خلال 30 دقيقة</div>
-        <div class="supp-note">امزجه بالماء لا الحليب بعد التمرين عشان امتصاص أسرع. بالحليب أفضل في أوقات ثانية.</div>
+        <div class="supp-dose">1 سكوب = 24g بروتين</div>
+        <div class="supp-note">بعد التمرين مباشرة بالماء لامتصاص أسرع</div>
       </div>
-      <span class="badge badge-green">أساسي</span>
     </div>
-
     <div class="supp-item">
-      <div class="supp-icon" style="background:rgba(124,92,191,0.1);">⚡</div>
-      <div style="flex:1">
-        <div class="supp-name">Creatine Monohydrate — ON</div>
-        <div class="supp-dose">5g يومياً (سكوبين من طقم الـ 2.5g)</div>
-        <div class="supp-time">⏰ أي وقت — مع الطعام أو بعد التمرين</div>
-        <div class="supp-note">اشرب ماء زيادة مع الكرياتين — يحتاج ترطيب جيد. لا توقف — يعطي نتيجة بعد 3–4 أسابيع من الاستمرار.</div>
+      <div class="supp-icon">⚡</div>
+      <div>
+        <div class="supp-name">Creatine Monohydrate</div>
+        <div class="supp-dose">5g يومياً (سكوبين)</div>
+        <div class="supp-note">أي وقت — مع الطعام أو بعد التمرين. اشرب ماء زيادة.</div>
       </div>
-      <span class="badge badge-green">أساسي</span>
     </div>
-
     <div class="supp-item">
-      <div class="supp-icon" style="background:rgba(245,166,35,0.1);">☀️</div>
-      <div style="flex:1">
+      <div class="supp-icon">☀️</div>
+      <div>
         <div class="supp-name">Vitamin D3 + Zinc + Magnesium</div>
-        <div class="supp-dose">قرص واحد يومياً</div>
-        <div class="supp-time">⏰ مع وجبة الصبح</div>
-        <div class="supp-note">90% من سكان المنطقة لديهم نقص D3. يؤثر مباشرة على الطاقة، الهرمونات، والتعافي. إلزامي.</div>
+        <div class="supp-dose">قرص واحد يومياً مع الصبح</div>
+        <div class="supp-note">90% من سكان المنطقة عندهم نقص. إلزامي.</div>
       </div>
-      <span class="badge badge-green">أساسي</span>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title"><span class="dot"></span>اختياري — بعد 3 أشهر</div>
-
-    <div class="supp-item">
-      <div class="supp-icon" style="background:rgba(46,204,138,0.1);">🐟</div>
-      <div style="flex:1">
-        <div class="supp-name">Omega 3</div>
-        <div class="supp-dose">2–3 كبسولة يومياً مع الأكل</div>
-        <div class="supp-time">⏰ مع الغداء أو العشاء</div>
-        <div class="supp-note">يقلل الالتهاب، يحسّن التعافي، ويدعم صحة القلب. اختياري لو أكلك فيه سمك 3+ مرات أسبوعياً.</div>
-      </div>
-      <span class="badge badge-amber">اختياري</span>
-    </div>
-
-    <div class="supp-item">
-      <div class="supp-icon" style="background:rgba(232,64,64,0.1);">🌿</div>
-      <div style="flex:1">
-        <div class="supp-name">Magnesium Glycinate</div>
-        <div class="supp-dose">300–400mg قبل النوم</div>
-        <div class="supp-time">⏰ 30 دقيقة قبل النوم</div>
-        <div class="supp-note">يحسّن جودة النوم بشكل ملحوظ ويقلل تقلصات العضلات. مفيد جداً في الأشهر الأولى من التمرين.</div>
-      </div>
-      <span class="badge badge-amber">اختياري</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="dot"></span>لا تشتري هذي</div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="background:rgba(232,64,64,0.07);border:1px solid rgba(232,64,64,0.2);border-radius:8px;padding:10px;font-size:13px;">
-        <strong style="color:var(--red);">Mass Gainer ❌</strong><br>
-        <span style="color:var(--muted);">سعرات فارغة من السكر والكارب الرديء. يزيد الدهون مع العضل. أكل حقيقي أفضل بكثير.</span>
-      </div>
-      <div style="background:rgba(232,64,64,0.07);border:1px solid rgba(232,64,64,0.2);border-radius:8px;padding:10px;font-size:13px;">
-        <strong style="color:var(--red);">Pre-workout ❌</strong><br>
-        <span style="color:var(--muted);">للمبتدئ مو ضروري. يعتمد عليه نفسياً. تمرة + موزة قبل التمرين تعطيك نفس الطاقة.</span>
-      </div>
-      <div style="background:rgba(232,64,64,0.07);border:1px solid rgba(232,64,64,0.2);border-radius:8px;padding:10px;font-size:13px;">
-        <strong style="color:var(--red);">BCAA ❌</strong><br>
-        <span style="color:var(--muted);">لو أكلك فيه بروتين كافٍ، الـ BCAA مضيعة فلوس. الواي بروتين يغطي كل الأحماض الأمينية الضرورية.</span>
-      </div>
-      <div style="background:rgba(232,64,64,0.07);border:1px solid rgba(232,64,64,0.2);border-radius:8px;padding:10px;font-size:13px;">
-        <strong style="color:var(--red);">Fat Burners ❌</strong><br>
-        <span style="color:var(--muted);">لا تعمل. حتى لو رفعت الحرق بشكل خفيف، ضررها على القلب والنوم أكبر من فايدتها.</span>
-      </div>
+  <div class="card" style="border-color:rgba(232,64,64,0.2)">
+    <div class="card-title" style="color:var(--red)">لا تشتري هذي ❌</div>
+    <div style="font-size:13px;color:var(--muted);line-height:2">
+      Mass Gainer · Pre-workout · BCAA · Fat Burners
     </div>
   </div>
 </div>
 
-<!-- WATER -->
-<div id="water" class="section">
-  <div class="section-header">خطة <span>الترطيب</span></div>
+<!-- PROGRESS -->
+<div id="sec-progress" class="section">
+  <div class="section-title">تقدّمك <span>عبر الزمن</span></div>
 
-  <div class="macro-row">
-    <div class="macro-card">
-      <div class="macro-val" style="color:#4fc3f7;">3.5L</div>
-      <div class="macro-lbl">أيام التمرين</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color:#4fc3f7;">2.5L</div>
-      <div class="macro-lbl">أيام الراحة</div>
-    </div>
-    <div class="macro-card">
-      <div class="macro-val" style="color:#4fc3f7;">+500ml</div>
-      <div class="macro-lbl">كل ساعة تمرين</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchChart('weight', this)">الوزن</button>
+    <button class="tab-btn" onclick="switchChart('fat', this)">الدهون</button>
+    <button class="tab-btn" onclick="switchChart('muscle', this)">العضل</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title" id="chart-title">الوزن عبر الزمن</div>
+    <div class="chart-wrap">
+      <canvas id="progress-chart"></canvas>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>جدول شرب الماء اليومي</div>
-    <div class="water-timeline">
-      <div class="water-item">
-        <div class="water-time">الاستيقاظ</div>
-        <div class="water-amount">500ml</div>
-        <div class="water-note">فور الاستيقاظ قبل أي شيء — ينشّط الجهاز الهضمي ويكسر الجفاف الليلي</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">الإفطار</div>
-        <div class="water-amount">250ml</div>
-        <div class="water-note">مع الوجبة أو بعدها</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">منتصف الصباح</div>
-        <div class="water-amount">500ml</div>
-        <div class="water-note">بين الإفطار والغداء</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">قبل التمرين</div>
-        <div class="water-amount">500ml</div>
-        <div class="water-note">قبل 30–45 دقيقة من التمرين</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">أثناء التمرين</div>
-        <div class="water-amount">500ml+</div>
-        <div class="water-note">رشفة كل 15 دقيقة — لا تنتظر تحس بالعطش</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">بعد التمرين</div>
-        <div class="water-amount">500ml</div>
-        <div class="water-note">مع الواي بروتين والكرياتين</div>
-      </div>
-      <div class="water-item">
-        <div class="water-time">المساء</div>
-        <div class="water-amount">750ml</div>
-        <div class="water-note">موزّعة على باقي اليوم — اوقف شرب الماء قبل ساعة من النوم</div>
-      </div>
-    </div>
+    <div class="card-title">آخر 5 قياسات</div>
+    <div id="stats-history"></div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot"></span>علامات الترطيب الجيد</div>
-    <div class="safety-item ok">
-      <div class="safety-icon">💧</div>
-      <div><div class="safety-title">لون البول الصحيح</div><div class="safety-desc">أصفر فاتح جداً تقريباً شفاف = ترطيب ممتاز. أصفر غامق = اشرب ماء الحين. برتقالي = تحذير جفاف.</div></div>
-    </div>
-    <div class="safety-item warn">
-      <div class="safety-icon">☕</div>
-      <div><div class="safety-title">القهوة والشاي</div><div class="safety-desc">تحسب جزئياً من السوائل لكن الكافيين يزيد التبول. لو شربت قهوة أضف 150ml ماء إضافي لكل فنجان.</div></div>
-    </div>
+    <div class="card-title">سجل التمارين</div>
+    <div id="workout-history"></div>
   </div>
 </div>
 
 <!-- SAFETY -->
-<div id="safety" class="section">
-  <div class="section-header">السلامة و<span>الحماية</span></div>
+<div id="sec-safety" class="section">
+  <div class="section-title">السلامة و<span>الحماية</span></div>
 
   <div class="card">
-    <div class="card-title"><span class="dot" style="background:var(--red);"></span>مخاطر التمارين — حمايتك</div>
-
+    <div class="card-title">مخاطر التمارين</div>
     <div class="safety-item">
-      <div class="safety-icon">🔥</div>
-      <div><div class="safety-title">الإحماء — إلزامي لا اختياري</div><div class="safety-desc">10 دقائق على الـ Treadmill قبل أي وزن. العضلة الباردة تتمزق بسهولة. الأسبوع الأول 80% من التمرين يكون إحماء وتعلّم حركة.</div></div>
+      <div class="safety-title">🔥 الإحماء إلزامي</div>
+      <div class="safety-desc">10 دقائق Treadmill قبل أي وزن. العضلة الباردة تتمزق بسهولة.</div>
     </div>
-
     <div class="safety-item">
-      <div class="safety-icon">🦴</div>
-      <div><div class="safety-title">الشكل الصحيح فوق الوزن دائماً</div><div class="safety-desc">لو ما قادر تكمل التكرار بشكل صحيح — خفّف الوزن. إصابة واحدة تُوقفك 4–8 أسابيع. شاهد فيديو لكل تمرين على YouTube قبل أول مرة.</div></div>
+      <div class="safety-title">🦴 الشكل فوق الوزن دائماً</div>
+      <div class="safety-desc">إصابة واحدة توقفك 4–8 أسابيع. شاهد فيديو كل تمرين جديد.</div>
     </div>
-
-    <div class="safety-item">
-      <div class="safety-icon">⚡</div>
-      <div><div class="safety-title">ألم العضل vs إصابة</div><div class="safety-desc">ألم عضلي بعد 24–48 ساعة من التمرين = طبيعي ومطلوب. ألم حاد مفاجئ أثناء التمرين أو في المفاصل = توقف فوراً.</div></div>
-    </div>
-
     <div class="safety-item warn">
-      <div class="safety-icon">📅</div>
-      <div><div class="safety-title">أيام الراحة غير قابلة للتفاوض</div><div class="safety-desc">التمرين يمزق الألياف العضلية، الراحة تبنيها أكبر. 7 أيام تمرين بدون راحة = نكوص لا تقدم. الراحة جزء من البرنامج.</div></div>
+      <div class="safety-title">📅 أيام الراحة غير قابلة للتفاوض</div>
+      <div class="safety-desc">العضل يُبنى أثناء الراحة لا التمرين. 7 أيام بدون راحة = نكوص.</div>
     </div>
-
-    <div class="safety-item warn">
-      <div class="safety-icon">🏋️</div>
-      <div><div class="safety-title">تمارين الأثقال الحرة — انتبه</div><div class="safety-desc">الدمبلز والبار — لا تمسك ثقل ما تقدر تتحكم فيه. ابدأ خفيف واثبت الشكل. Dumbbell Bench Press بدون spotter — لا تحمّل ما لا تقدر ترفعه وحدك.</div></div>
+    <div class="safety-item ok">
+      <div class="safety-title">😴 النوم 7–8 ساعات</div>
+      <div class="safety-desc">النوم أقل من 6 ساعات يُلغي 40% من نتائج التمرين.</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot" style="background:var(--amber);"></span>مخاطر السبلمنتس</div>
-
+    <div class="card-title">مخاطر السبلمنتس</div>
     <div class="safety-item warn">
-      <div class="safety-icon">💊</div>
-      <div><div class="safety-title">الكرياتين والكلى</div><div class="safety-desc">الكرياتين آمن تماماً للشخص الصحي بجرعة 5g يومياً. الشرط: شرب ماء كافٍ (3L+). لو عندك مشكلة كلى استشر طبيب أولاً.</div></div>
+      <div class="safety-title">💊 الكرياتين والكلى</div>
+      <div class="safety-desc">آمن بجرعة 5g مع شرب 3L+ ماء يومياً. لو عندك مشكلة كلى استشر طبيب.</div>
     </div>
-
-    <div class="safety-item warn">
-      <div class="safety-icon">🥛</div>
-      <div><div class="safety-title">الواي بروتين والهضم</div><div class="safety-desc">لو حسيت بانتفاخ أو غازات مع الواي — جرّب Whey Isolate بدل Concentrate. بعض الناس عندهم حساسية لاكتوز خفيفة.</div></div>
-    </div>
-
     <div class="safety-item ok">
-      <div class="safety-icon">☀️</div>
-      <div><div class="safety-title">فيتامين D3</div><div class="safety-desc">آمن جداً بجرعة 1,000–2,000 IU يومياً. لا تزيد عن 4,000 IU بدون فحص دم. مثالي لو تعمل في مكتب وما تتعرض للشمس كثيراً.</div></div>
+      <div class="safety-title">☀️ فيتامين D3</div>
+      <div class="safety-desc">آمن بـ 1,000–2,000 IU يومياً. لا تزيد عن 4,000 IU بدون فحص دم.</div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="dot" style="background:var(--green);"></span>نصائح عامة للسلامة</div>
-
-    <div class="safety-item ok">
-      <div class="safety-icon">🩺</div>
-      <div><div class="safety-title">فحص دم قبل البداية</div><div class="safety-desc">CBC + فيتامين D + سكر + دهون الدم. يعطيك صورة واضحة عن وضعك الحالي ويساعدك تتابع التحسن بعد 6 أشهر.</div></div>
-    </div>
-
-    <div class="safety-item ok">
-      <div class="safety-icon">📱</div>
-      <div><div class="safety-title">تتبع التقدم بالميزان الذكي</div><div class="safety-desc">قِس نفسك كل أسبوع — نفس الوقت، نفس الظروف (صباح قبل الأكل). لا تبكي على الرقم، تابع نسبة الدهون والعضل.</div></div>
-    </div>
-
-    <div class="safety-item ok">
-      <div class="safety-icon">🌡️</div>
-      <div><div class="safety-title">الحرارة في جدة — انتبه</div><div class="safety-desc">لو تمرنت والغرفة حارة — شغّل مكيف وتهوية. الحرارة الزائدة تسرّع ضربات القلب وتخدعك بإحساس "تمرنت أكثر". استهدف 20–24 درجة.</div></div>
-    </div>
-
-    <div class="safety-item ok">
-      <div class="safety-icon">📷</div>
-      <div><div class="safety-title">صوّر نفسك كل شهر</div><div class="safety-desc">صورة من الأمام والجانب — نفس الإضاءة. التغيير يكون بطيئاً في الحياة اليومية لكن بين الصور تشوف الفرق بوضوح. هذا أقوى دافع للاستمرار.</div></div>
+    <div class="card-title">الماء اليومي 💧</div>
+    <div style="font-size:13px;color:var(--muted);line-height:2.2">
+      <div>🌅 الاستيقاظ — <b style="color:var(--text)">500ml</b></div>
+      <div>🍳 مع الإفطار — <b style="color:var(--text)">250ml</b></div>
+      <div>☀️ منتصف الصباح — <b style="color:var(--text)">500ml</b></div>
+      <div>🏋️ قبل التمرين — <b style="color:var(--text)">500ml</b></div>
+      <div>💦 أثناء التمرين — <b style="color:var(--text)">500ml+</b></div>
+      <div>🥤 بعد التمرين — <b style="color:var(--text)">500ml</b></div>
+      <div>🌙 باقي اليوم — <b style="color:var(--text)">750ml</b></div>
+      <div style="margin-top:8px;padding:8px;background:rgba(79,142,247,0.08);border-radius:8px;color:var(--accent)">المجموع: <b>3.5L أيام التمرين</b></div>
     </div>
   </div>
 </div>
 
-<!-- iOS Add to Home Screen Banner -->
-<div id="ios-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:999; background:#1a1f2e; border-top:1px solid rgba(79,142,247,0.3); padding:1rem 1.25rem; padding-bottom:calc(1rem + env(safe-area-inset-bottom)); flex-direction:column; gap:8px;">
-  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-    <div>
-      <div style="font-weight:700; font-size:14px; color:#f0f2f7; margin-bottom:4px;">📲 أضف للشاشة الرئيسية</div>
-      <div style="font-size:12px; color:#7a8194; line-height:1.6;">اضغط على زر <strong style="color:#4f8ef7;">المشاركة</strong> ثم اختر <strong style="color:#4f8ef7;">"إضافة إلى الشاشة الرئيسية"</strong> ليظهر كتطبيق كامل</div>
-    </div>
-    <button id="close-banner" style="background:none;border:none;color:#7a8194;font-size:20px;cursor:pointer;padding:0 0 0 12px;-webkit-tap-highlight-color:transparent;">✕</button>
-  </div>
-  <div style="display:flex; align-items:center; gap:8px; font-size:12px; color:#7a8194;">
-    <span style="background:rgba(79,142,247,0.15);color:#4f8ef7;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;">⬆ مشاركة</span>
-    <span>←</span>
-    <span style="background:rgba(79,142,247,0.15);color:#4f8ef7;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600;">+ إضافة للشاشة الرئيسية</span>
-  </div>
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="bnav-btn active" onclick="showSection('home', this)">
+    <span class="icon">🏠</span>اليوم
+  </button>
+  <button class="bnav-btn" onclick="showSection('training', this)">
+    <span class="icon">🏋️</span>تمارين
+  </button>
+  <button class="bnav-btn" onclick="showSection('nutrition', this)">
+    <span class="icon">🍗</span>تغذية
+  </button>
+  <button class="bnav-btn" onclick="showSection('supplements', this)">
+    <span class="icon">💊</span>سبلمنت
+  </button>
+  <button class="bnav-btn" onclick="showSection('progress', this)">
+    <span class="icon">📈</span>تقدم
+  </button>
+  <button class="bnav-btn" onclick="showSection('safety', this)">
+    <span class="icon">🛡️</span>سلامة
+  </button>
 </div>
 
-<style>
-body { padding-bottom: env(safe-area-inset-bottom); }
-</style>
+<div class="toast" id="toast"></div>
 
 <script>
-function show(id, btn) {
-  document.querySelectorAll('.section').forEach(function(s) {
-    s.classList.remove('active');
-  });
-  document.querySelectorAll('.nav-btn').forEach(function(b) {
-    b.classList.remove('active');
-  });
-  var target = document.getElementById(id);
-  if (target) target.classList.add('active');
-  if (btn) btn.classList.add('active');
-  window.scrollTo(0, 0);
+const SUPABASE_URL = 'https://dtifzpbeoiuwjsfoyyir.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_9B8Gk3K7GH45aKWK62kBFw_jXZUmm22';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const TODAY = new Date().toISOString().split('T')[0];
+let chartInstance = null;
+let currentChartType = 'weight';
+
+// DATA
+const DAYS = [
+  { key: 'sun', label: 'الأحد', focus: 'صدر + تراي', rest: false, exercises: [
+    { name: 'إحماء Treadmill', sets: '10 دقيقة', yt: 'https://www.youtube.com/results?search_query=treadmill+warmup' },
+    { name: 'Dumbbell Chest Press', sets: '4×10', yt: 'https://www.youtube.com/results?search_query=dumbbell+chest+press' },
+    { name: 'Push Up على Power Tower', sets: '3×12', yt: 'https://www.youtube.com/results?search_query=power+tower+push+up' },
+    { name: 'Dumbbell Incline Press', sets: '3×10', yt: 'https://www.youtube.com/results?search_query=dumbbell+incline+press' },
+    { name: 'Chest Dip', sets: '3×8', yt: 'https://www.youtube.com/results?search_query=chest+dip+power+tower' },
+    { name: 'Overhead Tricep Extension', sets: '3×12', yt: 'https://www.youtube.com/results?search_query=overhead+tricep+extension+dumbbell' },
+    { name: 'Tricep Dip ضيق', sets: '3×10', yt: 'https://www.youtube.com/results?search_query=tricep+dip' },
+    { name: 'Treadmill كارديو ختامي', sets: '15 دقيقة', yt: 'https://www.youtube.com/results?search_query=cardio+cooldown+treadmill' },
+  ]},
+  { key: 'mon', label: 'الاثنين', focus: 'راحة', rest: true, exercises: [] },
+  { key: 'tue', label: 'الثلاثاء', focus: 'ظهر + باي', rest: false, exercises: [
+    { name: 'إحماء Treadmill', sets: '10 دقيقة', yt: 'https://www.youtube.com/results?search_query=treadmill+warmup' },
+    { name: 'Pull Up على Power Tower', sets: '4×max', yt: 'https://www.youtube.com/results?search_query=pull+up+power+tower' },
+    { name: 'Dumbbell Bent Over Row', sets: '4×10', yt: 'https://www.youtube.com/results?search_query=dumbbell+bent+over+row' },
+    { name: 'EZ Bar Curl', sets: '4×10', yt: 'https://www.youtube.com/results?search_query=ez+bar+curl' },
+    { name: 'Inverted Row', sets: '3×10', yt: 'https://www.youtube.com/results?search_query=inverted+row' },
+    { name: 'Hammer Curl دمبلز', sets: '3×12', yt: 'https://www.youtube.com/results?search_query=hammer+curl' },
+    { name: 'Resistance Band Pull Apart', sets: '3×15', yt: 'https://www.youtube.com/results?search_query=resistance+band+pull+apart' },
+    { name: 'Treadmill كارديو', sets: '15 دقيقة', yt: '' },
+  ]},
+  { key: 'wed', label: 'الأربعاء', focus: 'راحة', rest: true, exercises: [] },
+  { key: 'thu', label: 'الخميس', focus: 'أكتاف + بطن', rest: false, exercises: [
+    { name: 'إحماء Treadmill', sets: '10 دقيقة', yt: 'https://www.youtube.com/results?search_query=treadmill+warmup' },
+    { name: 'Dumbbell Shoulder Press', sets: '4×10', yt: 'https://www.youtube.com/results?search_query=dumbbell+shoulder+press' },
+    { name: 'Lateral Raise دمبلز', sets: '3×15', yt: 'https://www.youtube.com/results?search_query=dumbbell+lateral+raise' },
+    { name: 'Front Raise دمبلز', sets: '3×12', yt: 'https://www.youtube.com/results?search_query=dumbbell+front+raise' },
+    { name: 'Knee Raise على Power Tower', sets: '4×15', yt: 'https://www.youtube.com/results?search_query=knee+raise+power+tower' },
+    { name: 'Ab Roller عجلة البطن', sets: '3×8', yt: 'https://www.youtube.com/results?search_query=ab+roller+beginner' },
+    { name: 'Resistance Band Face Pull', sets: '3×15', yt: 'https://www.youtube.com/results?search_query=resistance+band+face+pull' },
+    { name: 'Treadmill HIIT', sets: '20 دقيقة', yt: 'https://www.youtube.com/results?search_query=treadmill+hiit+beginner' },
+  ]},
+  { key: 'fri', label: 'الجمعة', focus: 'راحة', rest: true, exercises: [] },
+  { key: 'sat', label: 'السبت', focus: 'فخوذ + جسم كامل', rest: false, exercises: [
+    { name: 'Treadmill Incline إحماء', sets: '10 دقيقة', yt: 'https://www.youtube.com/results?search_query=treadmill+incline+warmup' },
+    { name: 'Dumbbell Squat', sets: '4×12', yt: 'https://www.youtube.com/results?search_query=dumbbell+squat' },
+    { name: 'Bulgarian Split Squat', sets: '3×10 لكل رجل', yt: 'https://www.youtube.com/results?search_query=bulgarian+split+squat+dumbbell' },
+    { name: 'Dumbbell Lunge', sets: '3×12', yt: 'https://www.youtube.com/results?search_query=dumbbell+lunge' },
+    { name: 'Resistance Band Glute Kickback', sets: '3×15', yt: 'https://www.youtube.com/results?search_query=resistance+band+glute+kickback' },
+    { name: 'Burpees', sets: '3×10', yt: 'https://www.youtube.com/results?search_query=burpees+beginner' },
+    { name: 'Ab Roller + Push Up', sets: '3×10', yt: '' },
+    { name: 'Treadmill كارديو', sets: '20 دقيقة', yt: '' },
+  ]},
+];
+
+const MEALS = [
+  { key: 'breakfast', label: 'الإفطار', time: '7:00 ص', desc: '3 بيضات + شوفان + موزة', cal: 450 },
+  { key: 'snack1', label: 'وجبة خفيفة', time: '10:30 ص', desc: 'زبادي يوناني + مكسرات', cal: 250 },
+  { key: 'lunch', label: 'الغداء', time: '1:00 ظ', desc: '150g صدر دجاج + أرز بني + سلطة', cal: 550 },
+  { key: 'preworkout', label: 'ما قبل التمرين', time: 'قبل 30 دقيقة', desc: 'موزة + تمر 2–3 حبات', cal: 150 },
+  { key: 'postworkout', label: 'بعد التمرين', time: 'بعد مباشرة', desc: 'Whey Protein + موزة', cal: 200 },
+  { key: 'dinner', label: 'العشاء', time: '7:00 م', desc: 'سمك أو دجاج + خضروات', cal: 400 },
+];
+
+const SUPPS = [
+  { key: 'whey', label: 'Whey Protein', time: 'بعد التمرين', icon: '🥛' },
+  { key: 'creatine', label: 'Creatine 5g', time: 'أي وقت', icon: '⚡' },
+  { key: 'vitd3', label: 'Vitamin D3 + Zinc', time: 'مع الصبح', icon: '☀️' },
+];
+
+let todayChecks = {};
+let selectedDay = null;
+
+// INIT
+function init() {
+  setDate();
+  buildDaySelector();
+  buildMealList();
+  buildSuppList();
+  loadTodayChecks();
+  loadLatestStats();
+  loadChartData('weight');
+  loadStatsHistory();
+  loadWorkoutHistory();
+
+  const dayIndex = new Date().getDay();
+  const dayKeys = ['sun','mon','tue','wed','thu','fri','sat'];
+  selectDay(dayKeys[dayIndex]);
 }
 
+function setDate() {
+  const d = new Date();
+  const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('today-date').textContent = d.toLocaleDateString('ar-SA', opts);
+}
+
+// NAVIGATION
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.bnav-btn').forEach(function(b) { b.classList.remove('active'); });
+  var el = document.getElementById('sec-' + name);
+  if (el) el.classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'progress') {
+    loadChartData(currentChartType);
+    loadStatsHistory();
+    loadWorkoutHistory();
+  }
+}
+
+// DAY SELECTOR
+function buildDaySelector() {
+  var sel = document.getElementById('day-selector');
+  sel.innerHTML = '';
+  DAYS.forEach(function(d) {
+    var btn = document.createElement('button');
+    btn.className = 'day-pill';
+    btn.textContent = d.label + (d.rest ? ' 😴' : '');
+    btn.setAttribute('data-key', d.key);
+    btn.onclick = function() { selectDay(d.key); };
+    sel.appendChild(btn);
+  });
+}
+
+function selectDay(key) {
+  selectedDay = key;
+  document.querySelectorAll('.day-pill').forEach(function(p) {
+    p.classList.toggle('active', p.getAttribute('data-key') === key);
+  });
+  renderTrainingList(key);
+}
+
+function renderTrainingList(key) {
+  var day = DAYS.find(function(d) { return d.key === key; });
+  if (!day) return;
+
+  document.getElementById('training-day-title').textContent = day.label + ' — ' + day.focus;
+
+  var list = document.getElementById('training-list');
+  list.innerHTML = '';
+
+  if (day.rest) {
+    list.innerHTML = '<div class="empty-state">يوم راحة 😴<br>مشي خفيف 20 دقيقة اختياري</div>';
+    document.getElementById('training-progress-badge').textContent = '';
+    return;
+  }
+
+  var done = 0;
+  day.exercises.forEach(function(ex) {
+    var ck = 'ex_' + key + '_' + ex.name;
+    var completed = todayChecks[ck];
+    if (completed) done++;
+
+    var item = document.createElement('div');
+    item.className = 'check-item' + (completed ? ' done' : '');
+    item.innerHTML =
+      '<div class="check-box">' + (completed ? '✓' : '') + '</div>' +
+      '<div style="flex:1">' +
+        '<div class="check-label">' + ex.name + '</div>' +
+        '<div class="check-sub">' + ex.sets + '</div>' +
+      '</div>' +
+      (ex.yt ? '<a class="yt-link" href="' + ex.yt + '" target="_blank">▶ فيديو</a>' : '');
+    item.onclick = function(e) {
+      if (e.target.classList.contains('yt-link')) return;
+      toggleCheck('exercise', ck, item, day.key);
+    };
+    list.appendChild(item);
+  });
+
+  var total = day.exercises.length;
+  document.getElementById('training-progress-badge').textContent = done + '/' + total;
+  updateHomeProgress();
+}
+
+// MEALS
+function buildMealList() {
+  var list = document.getElementById('meal-list');
+  list.innerHTML = '';
+  var done = 0;
+  MEALS.forEach(function(meal) {
+    var ck = 'meal_' + meal.key;
+    var completed = todayChecks[ck];
+    if (completed) done++;
+
+    var item = document.createElement('div');
+    item.className = 'check-item' + (completed ? ' done' : '');
+    item.innerHTML =
+      '<div class="check-box">' + (completed ? '✓' : '') + '</div>' +
+      '<div style="flex:1">' +
+        '<div class="check-label">' + meal.label + '</div>' +
+        '<div class="check-sub">' + meal.time + ' · ' + meal.desc + '</div>' +
+      '</div>' +
+      '<div style="font-size:12px;font-weight:700;color:var(--green)">' + meal.cal + '</div>';
+    item.onclick = function() { toggleCheck('meal', ck, item, null); };
+    list.appendChild(item);
+  });
+  document.getElementById('meal-prog-badge').textContent = done + '/' + MEALS.length;
+}
+
+// SUPPLEMENTS
+function buildSuppList() {
+  var list = document.getElementById('supp-list');
+  list.innerHTML = '';
+  var done = 0;
+  SUPPS.forEach(function(s) {
+    var ck = 'supp_' + s.key;
+    var completed = todayChecks[ck];
+    if (completed) done++;
+
+    var item = document.createElement('div');
+    item.className = 'check-item' + (completed ? ' done' : '');
+    item.innerHTML =
+      '<div class="check-box">' + (completed ? '✓' : '') + '</div>' +
+      '<span style="font-size:20px">' + s.icon + '</span>' +
+      '<div style="flex:1">' +
+        '<div class="check-label">' + s.label + '</div>' +
+        '<div class="check-sub">' + s.time + '</div>' +
+      '</div>';
+    item.onclick = function() { toggleCheck('supplement', ck, item, null); };
+    list.appendChild(item);
+  });
+  document.getElementById('supp-prog-badge').textContent = done + '/' + SUPPS.length;
+}
+
+// TOGGLE CHECK
+async function toggleCheck(type, key, el, dayKey) {
+  var current = todayChecks[key] || false;
+  var newVal = !current;
+  todayChecks[key] = newVal;
+
+  el.classList.toggle('done', newVal);
+  var box = el.querySelector('.check-box');
+  if (box) box.textContent = newVal ? '✓' : '';
+
+  // Save to Supabase
+  var existing = await sb.from('daily_checklist')
+    .select('id')
+    .eq('date', TODAY)
+    .eq('item_type', type)
+    .eq('item_key', key)
+    .single();
+
+  if (existing.data) {
+    await sb.from('daily_checklist').update({ completed: newVal }).eq('id', existing.data.id);
+  } else {
+    await sb.from('daily_checklist').insert({ date: TODAY, item_type: type, item_key: key, completed: newVal });
+  }
+
+  updateHomeProgress();
+  if (type === 'meal') buildMealList();
+  if (type === 'supplement') buildSuppList();
+  if (type === 'exercise' && dayKey) renderTrainingList(dayKey);
+  if (newVal) showToast('تم ✓');
+}
+
+// LOAD TODAY CHECKS
+async function loadTodayChecks() {
+  var res = await sb.from('daily_checklist').select('*').eq('date', TODAY);
+  if (res.data) {
+    res.data.forEach(function(r) {
+      todayChecks[r.item_key] = r.completed;
+    });
+  }
+  buildMealList();
+  buildSuppList();
+  if (selectedDay) renderTrainingList(selectedDay);
+  updateHomeProgress();
+}
+
+// HOME PROGRESS
+function updateHomeProgress() {
+  // Exercises
+  var todayDayIndex = new Date().getDay();
+  var dayKeys = ['sun','mon','tue','wed','thu','fri','sat'];
+  var todayKey = dayKeys[todayDayIndex];
+  var todayDayData = DAYS.find(function(d) { return d.key === todayKey; });
+  var exTotal = 0, exDone = 0;
+  if (todayDayData && !todayDayData.rest) {
+    exTotal = todayDayData.exercises.length;
+    todayDayData.exercises.forEach(function(ex) {
+      if (todayChecks['ex_' + todayKey + '_' + ex.name]) exDone++;
+    });
+  }
+
+  // Meals
+  var mealDone = 0;
+  MEALS.forEach(function(m) { if (todayChecks['meal_' + m.key]) mealDone++; });
+
+  // Supps
+  var suppDone = 0;
+  SUPPS.forEach(function(s) { if (todayChecks['supp_' + s.key]) suppDone++; });
+
+  document.getElementById('prog-ex').textContent = exDone + '/' + exTotal;
+  document.getElementById('fill-ex').style.width = exTotal > 0 ? (exDone/exTotal*100) + '%' : '0%';
+
+  document.getElementById('prog-meal').textContent = mealDone + '/' + MEALS.length;
+  document.getElementById('fill-meal').style.width = (mealDone/MEALS.length*100) + '%';
+
+  document.getElementById('prog-supp').textContent = suppDone + '/' + SUPPS.length;
+  document.getElementById('fill-supp').style.width = (suppDone/SUPPS.length*100) + '%';
+
+  // Streak badge
+  var total = (exTotal > 0 ? exDone/exTotal : 1) + mealDone/MEALS.length + suppDone/SUPPS.length;
+  var pct = Math.round(total / 3 * 100);
+  document.getElementById('streak-badge').textContent = pct + '% اليوم';
+}
+
+// SAVE STATS
+async function saveStats() {
+  var w = document.getElementById('inp-weight').value;
+  var f = document.getElementById('inp-fat').value;
+  var m = document.getElementById('inp-muscle').value;
+  var n = document.getElementById('inp-note').value;
+
+  if (!w && !f && !m) { showToast('أدخل قيمة واحدة على الأقل'); return; }
+
+  var existing = await sb.from('body_stats').select('id').eq('date', TODAY).single();
+  var data = { date: TODAY, weight: w||null, body_fat: f||null, muscle_mass: m||null, notes: n||null };
+
+  if (existing.data) {
+    await sb.from('body_stats').update(data).eq('id', existing.data.id);
+  } else {
+    await sb.from('body_stats').insert(data);
+  }
+
+  showToast('تم حفظ القياسات ✓');
+  loadLatestStats();
+  document.getElementById('inp-weight').value = '';
+  document.getElementById('inp-fat').value = '';
+  document.getElementById('inp-muscle').value = '';
+  document.getElementById('inp-note').value = '';
+}
+
+// LOAD LATEST STATS
+async function loadLatestStats() {
+  var res = await sb.from('body_stats').select('*').order('date', { ascending: false }).limit(1).single();
+  if (res.data) {
+    document.getElementById('latest-weight').textContent = res.data.weight || '—';
+    document.getElementById('latest-fat').textContent = res.data.body_fat ? res.data.body_fat + '%' : '—';
+    document.getElementById('latest-muscle').textContent = res.data.muscle_mass ? res.data.muscle_mass + '%' : '—';
+  }
+}
+
+// CHART
+async function loadChartData(type) {
+  currentChartType = type;
+  var res = await sb.from('body_stats').select('date,weight,body_fat,muscle_mass').order('date', { ascending: true }).limit(30);
+  if (!res.data || res.data.length === 0) return;
+
+  var labels = res.data.map(function(r) { return r.date.slice(5); });
+  var values = res.data.map(function(r) {
+    if (type === 'weight') return r.weight;
+    if (type === 'fat') return r.body_fat;
+    if (type === 'muscle') return r.muscle_mass;
+    return null;
+  });
+
+  var colors = { weight: '#4f8ef7', fat: '#f5a623', muscle: '#2ecc8a' };
+  var titles = { weight: 'الوزن (كيلو)', fat: 'نسبة الدهون %', muscle: 'كتلة العضل %' };
+  document.getElementById('chart-title').textContent = titles[type];
+
+  var ctx = document.getElementById('progress-chart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: titles[type],
+        data: values,
+        borderColor: colors[type],
+        backgroundColor: colors[type] + '22',
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: colors[type],
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#7a8194', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: { ticks: { color: '#7a8194', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      }
+    }
+  });
+}
+
+function switchChart(type, btn) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  loadChartData(type);
+}
+
+// STATS HISTORY
+async function loadStatsHistory() {
+  var res = await sb.from('body_stats').select('*').order('date', { ascending: false }).limit(5);
+  var el = document.getElementById('stats-history');
+  if (!res.data || res.data.length === 0) {
+    el.innerHTML = '<div class="empty-state">لا توجد قياسات بعد</div>';
+    return;
+  }
+  el.innerHTML = '';
+  res.data.forEach(function(r) {
+    var item = document.createElement('div');
+    item.className = 'log-item';
+    item.innerHTML =
+      '<div><div class="log-name">' + r.date + '</div>' +
+      '<div class="log-detail">' + (r.notes || '') + '</div></div>' +
+      '<div style="text-align:left;font-size:12px;color:var(--muted)">' +
+        (r.weight ? '<div style="color:var(--accent)">' + r.weight + ' كيلو</div>' : '') +
+        (r.body_fat ? '<div style="color:var(--amber)">' + r.body_fat + '% دهون</div>' : '') +
+        (r.muscle_mass ? '<div style="color:var(--green)">' + r.muscle_mass + '% عضل</div>' : '') +
+      '</div>';
+    el.appendChild(item);
+  });
+}
+
+// WORKOUT HISTORY
+async function loadWorkoutHistory() {
+  var res = await sb.from('workout_log').select('*').order('date', { ascending: false }).limit(10);
+  var el = document.getElementById('workout-history');
+  if (!res.data || res.data.length === 0) {
+    el.innerHTML = '<div class="empty-state">لا يوجد سجل تمارين بعد</div>';
+    return;
+  }
+  el.innerHTML = '';
+  res.data.forEach(function(r) {
+    var item = document.createElement('div');
+    item.className = 'log-item';
+    item.innerHTML =
+      '<div><div class="log-name">' + r.exercise_name + '</div>' +
+      '<div class="log-detail">' + r.date + ' · ' + (r.sets||0) + ' سيت × ' + (r.reps||0) + ' تكرار</div></div>' +
+      '<div class="log-weight">' + (r.weight_kg || '—') + '<span style="font-size:10px;color:var(--muted)"> كيلو</span></div>';
+    el.appendChild(item);
+  });
+}
+
+// TOAST
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2000);
+}
+
+// iOS BANNER
 window.addEventListener('load', function() {
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase());
   var isStandalone = window.navigator.standalone;
   if (isIOS && !isStandalone) {
-    var banner = document.getElementById('ios-banner');
-    if (banner) {
-      banner.style.display = 'flex';
-      document.getElementById('close-banner').addEventListener('click', function() {
-        banner.style.display = 'none';
-      });
-    }
+    showToast('افتح في Safari وأضفه للشاشة الرئيسية 📲');
   }
+  init();
 });
 </script>
 </body>

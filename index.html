@@ -79,7 +79,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
 .stat-input-wrap{display:flex;flex-direction:column;gap:5px}
 .stat-input-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
-.stat-input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:600;width:100%;-webkit-appearance:none}
+.stat-input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:16px;font-weight:600;width:100%;-webkit-appearance:none}
 .stat-input:focus{outline:none;border-color:var(--accent)}
 .stat-input::placeholder{color:var(--muted);font-weight:400}
 .btn{background:var(--accent);color:white;border:none;border-radius:10px;padding:12px 20px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer;width:100%;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:opacity 0.15s}
@@ -87,13 +87,9 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
 .btn.secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .btn.danger{background:rgba(232,64,64,0.15);color:var(--red);border:1px solid rgba(232,64,64,0.3)}
 .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.metric-row-4{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}
 .metric{background:var(--surface2);border-radius:10px;padding:10px;text-align:center;border:1px solid var(--border)}
 .metric-val{font-size:18px;font-weight:800;letter-spacing:-0.02em}
 .metric-lbl{font-size:10px;color:var(--muted);margin-top:2px}
-.log-item{background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.log-name{font-size:13px;font-weight:600}
-.log-detail{font-size:11px;color:var(--muted);margin-top:2px}
 .tabs{display:flex;background:var(--surface2);border-radius:10px;padding:3px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:3px}
 .tabs::-webkit-scrollbar{display:none}
 .tab-btn{flex-shrink:0;background:none;border:none;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;padding:7px 10px;border-radius:8px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.15s;white-space:nowrap}
@@ -138,6 +134,32 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
 .confirm-desc{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
 .confirm-btns{display:flex;gap:10px}
 .scale-section-title{font-size:13px;font-weight:700;color:var(--accent);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.06em}
+
+.photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.photo-card{position:relative;border-radius:12px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);aspect-ratio:3/4;cursor:pointer}
+.photo-card img{width:100%;height:100%;object-fit:cover}
+.photo-card-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:8px;font-size:11px}
+.photo-card-date{font-weight:700;color:white}
+.photo-card-stats{color:rgba(255,255,255,0.7);margin-top:2px}
+.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:12px}
+.photo-upload-area:active{border-color:var(--accent)}
+.photo-upload-icon{font-size:32px;margin-bottom:8px}
+.photo-upload-text{font-size:13px;color:var(--muted)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.compare-slot{background:var(--surface2);border:2px dashed var(--border);border-radius:12px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.compare-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.compare-slot-label{font-size:11px;color:var(--muted);margin-top:6px;position:relative;z-index:1}
+.compare-slot-icon{font-size:24px;position:relative;z-index:1}
+.compare-slot.has-photo .compare-slot-icon{display:none}
+.compare-slot.has-photo .compare-slot-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;color:white;font-weight:700;background:rgba(0,0,0,0.5);padding:3px;font-size:10px;z-index:2}
+.photo-modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
+.photo-modal.show{display:flex}
+.photo-modal img{max-width:100%;max-height:70vh;border-radius:12px;object-fit:contain}
+.photo-modal-info{margin-top:1rem;text-align:center}
+.photo-modal-date{font-size:16px;font-weight:700}
+.photo-modal-stats{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.8}
+.photo-modal-close{position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:16px;background:rgba(255,255,255,0.1);border:none;color:white;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo-modal-delete{margin-top:1rem;background:rgba(232,64,64,0.15);color:var(--red);border:1px solid rgba(232,64,64,0.3);border-radius:10px;padding:10px 20px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -197,7 +219,6 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
   </div>
 
-  <!-- HOME -->
   <div id="sec-home" class="section active">
     <div class="hero">
       <div class="hero-name">يا هلا <span id="hero-name-text">مو</span> 💪</div>
@@ -227,7 +248,6 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
   </div>
 
-  <!-- TRAINING -->
   <div id="sec-training" class="section">
     <div class="section-title">تمارين <span>اليوم</span></div>
     <div class="day-selector" id="day-selector"></div>
@@ -237,7 +257,6 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
   </div>
 
-  <!-- NUTRITION -->
   <div id="sec-nutrition" class="section">
     <div class="section-title">وجبات <span>اليوم</span></div>
     <div class="card"><div class="card-title">الماكرو اليومي</div><div class="metric-row"><div class="metric"><div class="metric-val" style="color:var(--accent)">1800</div><div class="metric-lbl">سعرة</div></div><div class="metric"><div class="metric-val" style="color:var(--green)">150g</div><div class="metric-lbl">بروتين</div></div><div class="metric"><div class="metric-val" style="color:var(--amber)">180g</div><div class="metric-lbl">كارب</div></div></div></div>
@@ -245,20 +264,16 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     <div class="card"><div class="card-title">مصادر البروتين</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div></div></div>
   </div>
 
-  <!-- SUPPLEMENTS -->
   <div id="sec-supplements" class="section">
     <div class="section-title"><span>السبلمنتس</span></div>
     <div class="card"><div class="card-title"><span>تشيك ليست اليوم</span><span id="supp-prog-badge" class="badge badge-amber"></span></div><div id="supp-list"></div></div>
     <div class="card"><div class="card-title">معلومات</div><div class="supp-item"><div class="supp-icon">🥛</div><div><div class="supp-name">Whey Protein</div><div class="supp-dose">1 سكوب = 24g بروتين</div><div class="supp-note">بعد التمرين بالماء</div></div></div><div class="supp-item"><div class="supp-icon">⚡</div><div><div class="supp-name">Creatine Monohydrate</div><div class="supp-dose">5g يومياً</div><div class="supp-note">مع شرب ماء زيادة</div></div></div><div class="supp-item"><div class="supp-icon">☀️</div><div><div class="supp-name">Vitamin D3 + Zinc</div><div class="supp-dose">قرص واحد مع الصبح</div><div class="supp-note">إلزامي لسكان المنطقة</div></div></div></div>
   </div>
 
-  <!-- SCALE / BODY STATS -->
   <div id="sec-scale" class="section">
     <div class="section-title">قياسات <span>الميزان</span></div>
-
     <div class="card">
       <div class="card-title">سجّل قياسات جديدة</div>
-
       <div class="scale-section-title">الأساسية</div>
       <div class="stats-grid">
         <div class="stat-input-wrap"><div class="stat-input-label">الوزن (kg)</div><input class="stat-input" id="s-weight" type="number" step="0.1" placeholder="83.0"></div>
@@ -266,7 +281,6 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
         <div class="stat-input-wrap"><div class="stat-input-label">دهون الجسم %</div><input class="stat-input" id="s-fat" type="number" step="0.1" placeholder="28.0"></div>
         <div class="stat-input-wrap"><div class="stat-input-label">كتلة العضل (kg)</div><input class="stat-input" id="s-muscle" type="number" step="0.1" placeholder="56.7"></div>
       </div>
-
       <div class="scale-section-title">التفاصيل</div>
       <div class="stats-grid">
         <div class="stat-input-wrap"><div class="stat-input-label">BMR (kcal)</div><input class="stat-input" id="s-bmr" type="number" placeholder="1739"></div>
@@ -280,21 +294,15 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
         <div class="stat-input-wrap"><div class="stat-input-label">الدهون تحت الجلد %</div><input class="stat-input" id="s-subcut" type="number" step="0.1" placeholder="24.6"></div>
         <div class="stat-input-wrap"><div class="stat-input-label">عمر الجسم</div><input class="stat-input" id="s-bodyage" type="number" placeholder="30"></div>
       </div>
-
       <div class="stat-input-wrap" style="margin-bottom:12px"><div class="stat-input-label">ملاحظة</div><input class="stat-input" id="s-note" type="text" placeholder="اليوم شعرت..."></div>
       <button class="btn" onclick="saveScale()">💾 حفظ القياسات</button>
     </div>
-
-    <div class="card">
-      <div class="card-title">آخر 5 قياسات</div>
-      <div id="scale-history"></div>
-    </div>
+    <div class="card"><div class="card-title">آخر 5 قياسات</div><div id="scale-history"></div></div>
   </div>
 
-  <!-- PROGRESS -->
   <div id="sec-progress" class="section">
     <div class="section-title">تقدّمك <span>عبر الزمن</span></div>
-    <div class="tabs" id="chart-tabs">
+    <div class="tabs">
       <button class="tab-btn active" onclick="switchChart('weight',this)">الوزن</button>
       <button class="tab-btn" onclick="switchChart('body_fat',this)">دهون %</button>
       <button class="tab-btn" onclick="switchChart('muscle_mass',this)">عضل kg</button>
@@ -312,7 +320,6 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
   </div>
 
-  <!-- SETTINGS -->
   <div id="sec-settings" class="section">
     <div class="section-title"><span>الإعدادات</span></div>
     <div class="card">
@@ -322,7 +329,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
     <div class="card" style="border-color:rgba(232,64,64,0.2)">
       <div class="card-title" style="color:var(--red)">⚠️ إعادة التعيين</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6">حذف كل بيانات هذا الحساب نهائياً — القياسات والتشيك ليست وسجل التمارين. لا يمكن التراجع.</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6">حذف كل بيانات هذا الحساب نهائياً. لا يمكن التراجع.</div>
       <button class="btn danger" onclick="confirmReset()">🗑️ حذف كل بياناتي</button>
     </div>
     <div class="card"><div class="card-title">السلامة</div>
@@ -333,6 +340,69 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     <div class="card"><div class="card-title">الماء اليومي 💧</div><div style="font-size:13px;color:var(--muted);line-height:2.2"><div>🌅 الاستيقاظ — <b style="color:var(--text)">500ml</b></div><div>🍳 الإفطار — <b style="color:var(--text)">250ml</b></div><div>🏋️ قبل التمرين — <b style="color:var(--text)">500ml</b></div><div>💦 أثناء التمرين — <b style="color:var(--text)">500ml+</b></div><div>🥤 بعد التمرين — <b style="color:var(--text)">500ml</b></div><div>🌙 باقي اليوم — <b style="color:var(--text)">750ml</b></div><div style="margin-top:8px;padding:8px;background:rgba(79,142,247,0.08);border-radius:8px;color:var(--accent)">المجموع: <b>3.5L أيام التمرين</b></div></div></div>
   </div>
 
+
+  <div id="sec-photos" class="section">
+    <div class="section-title">ألبوم <span>التطور</span></div>
+
+    <div class="card">
+      <div class="card-title">أضف صورة جديدة</div>
+      <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+        <div class="photo-upload-icon">📸</div>
+        <div class="photo-upload-text">اضغط لرفع صورة</div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+      <div class="stats-grid" id="photo-stats-inputs">
+        <div class="stat-input-wrap"><div class="stat-input-label">الوزن (kg)</div><input class="stat-input" id="p-weight" type="number" step="0.1" placeholder="83.0"></div>
+        <div class="stat-input-wrap"><div class="stat-input-label">دهون %</div><input class="stat-input" id="p-fat" type="number" step="0.1" placeholder="28.0"></div>
+        <div class="stat-input-wrap"><div class="stat-input-label">عضل kg</div><input class="stat-input" id="p-muscle" type="number" step="0.1" placeholder="56.7"></div>
+        <div class="stat-input-wrap"><div class="stat-input-label">دهون حشوي</div><input class="stat-input" id="p-visceral" type="number" step="0.1" placeholder="11"></div>
+      </div>
+      <div class="stat-input-wrap" style="margin-bottom:12px"><div class="stat-input-label">ملاحظة</div><input class="stat-input" id="p-note" type="text" placeholder="الأسبوع الأول..."></div>
+      <div id="photo-preview" style="display:none;margin-bottom:12px">
+        <img id="photo-preview-img" style="width:100%;border-radius:10px;max-height:200px;object-fit:cover">
+      </div>
+      <button class="btn" id="upload-btn" onclick="uploadPhoto()" style="display:none">📤 رفع الصورة</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>الصور</span>
+        <span id="photos-count" class="badge badge-blue"></span>
+      </div>
+      <div class="photo-grid" id="photo-grid">
+        <div class="empty-state" style="grid-column:span 2">لا توجد صور بعد</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">مقارنة قبل وبعد</div>
+      <div class="compare-grid">
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">قبل</div>
+          <div class="compare-slot" id="compare-before" onclick="selectCompare('before')">
+            <span class="compare-slot-icon">+</span>
+            <span class="compare-slot-label">اختر صورة</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">بعد</div>
+          <div class="compare-slot" id="compare-after" onclick="selectCompare('after')">
+            <span class="compare-slot-icon">+</span>
+            <span class="compare-slot-label">اختر صورة</span>
+          </div>
+        </div>
+      </div>
+      <div id="compare-stats" style="display:none;margin-top:12px">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;font-size:12px">
+          <div id="before-stats" style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)"></div>
+          <div style="font-size:20px;text-align:center">↔</div>
+          <div id="after-stats" style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)"></div>
+        </div>
+        <div id="diff-stats" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.2);border-radius:10px;padding:12px;margin-top:10px;font-size:13px;text-align:center"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="bottom-nav">
     <button class="bnav-btn active" onclick="showSection('home',this)"><span class="icon">🏠</span>اليوم</button>
     <button class="bnav-btn" onclick="showSection('training',this)"><span class="icon">🏋️</span>تمارين</button>
@@ -340,6 +410,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     <button class="bnav-btn" onclick="showSection('supplements',this)"><span class="icon">💊</span>سبلمنت</button>
     <button class="bnav-btn" onclick="showSection('scale',this)"><span class="icon">⚖️</span>ميزان</button>
     <button class="bnav-btn" onclick="showSection('progress',this)"><span class="icon">📈</span>تقدم</button>
+    <button class="bnav-btn" onclick="showSection('photos',this)"><span class="icon">📸</span>صور</button>
     <button class="bnav-btn" onclick="showSection('settings',this)"><span class="icon">⚙️</span>إعدادات</button>
   </div>
 </div>
@@ -354,6 +425,17 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     </div>
   </div>
 </div>
+
+<div class="photo-modal" id="photo-modal">
+  <button class="photo-modal-close" onclick="closePhotoModal()">✕</button>
+  <img id="modal-img" src="" alt="progress photo">
+  <div class="photo-modal-info">
+    <div class="photo-modal-date" id="modal-date"></div>
+    <div class="photo-modal-stats" id="modal-stats"></div>
+  </div>
+  <button class="photo-modal-delete" onclick="deletePhoto()">🗑️ حذف الصورة</button>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -362,10 +444,8 @@ var SB_KEY='sb_publishable_9B8Gk3K7GH45aKWK62kBFw_jXZUmm22';
 var sb=supabase.createClient(SB_URL,SB_KEY);
 var TODAY=new Date().toISOString().split('T')[0];
 var currentUser=null,pinBuffer='',pinTarget='',chartInstance=null,currentChartType='weight',todayChecks={},selectedDay=null;
-
 var CHART_LABELS={weight:'الوزن (kg)',body_fat:'دهون الجسم %',muscle_mass:'كتلة العضل kg',visceral_fat:'الدهون الحشوية',bmi:'BMI',water_pct:'نسبة الماء %',body_fat_mass:'كتلة الدهون kg',lean_body_mass:'Lean Body Mass kg',protein_pct:'نسبة البروتين %',bmr:'BMR kcal'};
 var CHART_COLORS={weight:'#4f8ef7',body_fat:'#e84040',muscle_mass:'#2ecc8a',visceral_fat:'#f5a623',bmi:'#7c5cbf',water_pct:'#4fc3f7',body_fat_mass:'#ff6b6b',lean_body_mass:'#a3e635',protein_pct:'#f472b6',bmr:'#818cf8'};
-
 var DAYS=[
   {key:'sun',label:'الأحد',focus:'صدر + تراي',rest:false,exercises:[
     {name:'إحماء Treadmill',sets:'10 دقيقة',yt:'https://www.youtube.com/results?search_query=treadmill+warmup'},
@@ -411,7 +491,6 @@ var DAYS=[
     {name:'Treadmill كارديو',sets:'20 دقيقة',yt:''}
   ]}
 ];
-
 var MEALS=[
   {key:'breakfast',label:'الإفطار',time:'7:00 ص',desc:'3 بيضات + شوفان + موزة',cal:450},
   {key:'snack1',label:'وجبة خفيفة',time:'10:30 ص',desc:'زبادي يوناني + مكسرات',cal:250},
@@ -420,14 +499,11 @@ var MEALS=[
   {key:'postworkout',label:'بعد التمرين',time:'بعد مباشرة',desc:'Whey Protein + موزة',cal:200},
   {key:'dinner',label:'العشاء',time:'7:00 م',desc:'سمك أو دجاج + خضروات',cal:400}
 ];
-
 var SUPPS=[
   {key:'whey',label:'Whey Protein',time:'بعد التمرين',icon:'🥛'},
   {key:'creatine',label:'Creatine 5g',time:'أي وقت',icon:'⚡'},
   {key:'vitd3',label:'Vitamin D3 + Zinc',time:'مع الصبح',icon:'☀️'}
 ];
-
-// LOGIN
 function selectUser(u){pinTarget=u;pinBuffer='';document.getElementById('pin-title').textContent=u;document.getElementById('pin-error').textContent='';updatePinDots();document.getElementById('user-select-view').style.display='none';document.getElementById('pin-screen').style.display='flex';document.getElementById('new-user-screen').style.display='none';}
 function pinPress(n){if(pinBuffer.length>=6)return;pinBuffer+=n;updatePinDots();if(pinBuffer.length===6)setTimeout(checkPin,100);}
 function pinDel(){pinBuffer=pinBuffer.slice(0,-1);updatePinDots();}
@@ -442,12 +518,10 @@ function loginSuccess(u){currentUser=u;document.body.classList.add('logged-in');
 function logout(){currentUser=null;todayChecks={};document.body.classList.remove('logged-in');pinBuffer='';document.getElementById('user-select-view').style.display='block';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='none';loadUser2Card();document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.getElementById('sec-home').classList.add('active');document.querySelectorAll('.bnav-btn').forEach(function(b){b.classList.remove('active');});document.querySelector('.bnav-btn').classList.add('active');}
 function confirmReset(){document.getElementById('confirm-overlay').classList.add('show');}
 function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
-async function resetData(){closeConfirm();await sb.from('daily_checklist').delete().eq('user_id',currentUser);await sb.from('body_stats').delete().eq('user_id',currentUser);await sb.from('workout_log').delete().eq('user_id',currentUser);todayChecks={};showToast('تم حذف كل البيانات');buildMealList();buildSuppList();if(selectedDay)renderTrainingList(selectedDay);updateHomeProgress();['h-weight','h-fat','h-muscle','h-visceral','h-bmr','h-bodyage'].forEach(function(id){document.getElementById(id).textContent='—';});}
-
-// INIT
-function init(){setDate();buildDaySelector();buildMealList();buildSuppList();loadTodayChecks();loadLatestStats();loadScaleHistory();loadChartData('weight');var dk=['sun','mon','tue','wed','thu','fri','sat'];selectDay(dk[new Date().getDay()]);}
+async function resetData(){closeConfirm();await sb.from('daily_checklist').delete().eq('user_id',currentUser);await sb.from('body_stats').delete().eq('user_id',currentUser);await sb.from('workout_log').delete().eq('user_id',currentUser);await sb.from('progress_photos').delete().eq('user_id',currentUser);todayChecks={};showToast('تم حذف كل البيانات');buildMealList();buildSuppList();if(selectedDay)renderTrainingList(selectedDay);updateHomeProgress();['h-weight','h-fat','h-muscle','h-visceral','h-bmr','h-bodyage'].forEach(function(id){document.getElementById(id).textContent='—';});}
+function init(){setDate();buildDaySelector();buildMealList();buildSuppList();loadTodayChecks();loadLatestStats();loadScaleHistory();loadChartData('weight');loadPhotos();var dk=['sun','mon','tue','wed','thu','fri','sat'];selectDay(dk[new Date().getDay()]);}
 function setDate(){var d=new Date();document.getElementById('today-date').textContent=d.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});}
-function showSection(n,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.bnav-btn').forEach(function(b){b.classList.remove('active');});var el=document.getElementById('sec-'+n);if(el)el.classList.add('active');if(btn)btn.classList.add('active');window.scrollTo(0,0);if(n==='progress'){loadChartData(currentChartType);}if(n==='scale'){loadScaleHistory();}}
+function showSection(n,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.bnav-btn').forEach(function(b){b.classList.remove('active');});var el=document.getElementById('sec-'+n);if(el)el.classList.add('active');if(btn)btn.classList.add('active');window.scrollTo(0,0);if(n==='progress'){loadChartData(currentChartType);}if(n==='scale'){loadScaleHistory();}if(n==='photos'){loadPhotos();}}
 function buildDaySelector(){var sel=document.getElementById('day-selector');sel.innerHTML='';DAYS.forEach(function(d){var btn=document.createElement('button');btn.className='day-pill';btn.textContent=d.label+(d.rest?' 😴':'');btn.setAttribute('data-key',d.key);btn.onclick=function(){selectDay(d.key);};sel.appendChild(btn);});}
 function selectDay(key){selectedDay=key;document.querySelectorAll('.day-pill').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-key')===key);});renderTrainingList(key);}
 function renderTrainingList(key){var day=DAYS.find(function(d){return d.key===key;});if(!day)return;document.getElementById('training-day-title').textContent=day.label+' — '+day.focus;var list=document.getElementById('training-list');list.innerHTML='';if(day.rest){list.innerHTML='<div class="empty-state">يوم راحة 😴<br>مشي خفيف 20 دقيقة اختياري</div>';document.getElementById('training-progress-badge').textContent='';return;}var done=0;day.exercises.forEach(function(ex){var ck='ex_'+key+'_'+ex.name;var completed=todayChecks[ck];if(completed)done++;var item=document.createElement('div');item.className='check-item'+(completed?' done':'');item.innerHTML='<div class="check-box">'+(completed?'✓':'')+'</div><div style="flex:1"><div class="check-label">'+ex.name+'</div><div class="check-sub">'+ex.sets+'</div></div>'+(ex.yt?'<a class="yt-link" href="'+ex.yt+'" target="_blank">▶ فيديو</a>':'');item.onclick=function(e){if(e.target.classList.contains('yt-link'))return;toggleCheck('exercise',ck,item,key);};list.appendChild(item);});document.getElementById('training-progress-badge').textContent=done+'/'+day.exercises.length;updateHomeProgress();}
@@ -456,77 +530,160 @@ function buildSuppList(){var list=document.getElementById('supp-list');list.inne
 async function toggleCheck(type,key,el,dayKey){var current=todayChecks[key]||false;var newVal=!current;todayChecks[key]=newVal;el.classList.toggle('done',newVal);var box=el.querySelector('.check-box');if(box)box.textContent=newVal?'✓':'';var existing=await sb.from('daily_checklist').select('id').eq('date',TODAY).eq('item_type',type).eq('item_key',key).eq('user_id',currentUser).single();if(existing.data){await sb.from('daily_checklist').update({completed:newVal}).eq('id',existing.data.id);}else{await sb.from('daily_checklist').insert({date:TODAY,item_type:type,item_key:key,completed:newVal,user_id:currentUser});}updateHomeProgress();if(type==='meal')buildMealList();if(type==='supplement')buildSuppList();if(type==='exercise'&&dayKey)renderTrainingList(dayKey);if(newVal)showToast('تم ✓');}
 async function loadTodayChecks(){var r=await sb.from('daily_checklist').select('*').eq('date',TODAY).eq('user_id',currentUser);todayChecks={};if(r.data)r.data.forEach(function(x){todayChecks[x.item_key]=x.completed;});buildMealList();buildSuppList();if(selectedDay)renderTrainingList(selectedDay);updateHomeProgress();}
 function updateHomeProgress(){var dk=['sun','mon','tue','wed','thu','fri','sat'];var tk=dk[new Date().getDay()];var td=DAYS.find(function(d){return d.key===tk;});var exTotal=0,exDone=0;if(td&&!td.rest){exTotal=td.exercises.length;td.exercises.forEach(function(ex){if(todayChecks['ex_'+tk+'_'+ex.name])exDone++;});}var md=0;MEALS.forEach(function(m){if(todayChecks['meal_'+m.key])md++;});var sd=0;SUPPS.forEach(function(s){if(todayChecks['supp_'+s.key])sd++;});document.getElementById('prog-ex').textContent=exDone+'/'+exTotal;document.getElementById('fill-ex').style.width=exTotal>0?(exDone/exTotal*100)+'%':'0%';document.getElementById('prog-meal').textContent=md+'/'+MEALS.length;document.getElementById('fill-meal').style.width=(md/MEALS.length*100)+'%';document.getElementById('prog-supp').textContent=sd+'/'+SUPPS.length;document.getElementById('fill-supp').style.width=(sd/SUPPS.length*100)+'%';var pct=Math.round(((exTotal>0?exDone/exTotal:1)+md/MEALS.length+sd/SUPPS.length)/3*100);document.getElementById('day-progress-badge').textContent=pct+'% اليوم';}
-
-// SCALE
-async function saveScale(){
-  var data={
-    date:TODAY,user_id:currentUser,
-    weight:v('s-weight'),bmi:v('s-bmi'),body_fat:v('s-fat'),muscle_mass:v('s-muscle'),
-    bmr:vi('s-bmr'),water_pct:v('s-water'),body_fat_mass:v('s-fatmass'),
-    lean_body_mass:v('s-lean'),bone_mass:v('s-bone'),visceral_fat:v('s-visceral'),
-    protein_pct:v('s-protein'),skeletal_muscle_mass:v('s-skeletal'),
-    subcutaneous_fat:v('s-subcut'),body_age:vi('s-bodyage'),notes:vs('s-note')
-  };
-  var hasData=Object.keys(data).some(function(k){return k!=='date'&&k!=='user_id'&&k!=='notes'&&data[k]!==null;});
-  if(!hasData){showToast('أدخل قيمة واحدة على الأقل',true);return;}
-  var ex=await sb.from('body_stats').select('id').eq('date',TODAY).eq('user_id',currentUser).single();
-  if(ex.data){await sb.from('body_stats').update(data).eq('id',ex.data.id);}
-  else{await sb.from('body_stats').insert(data);}
-  showToast('تم حفظ القياسات ✓');
-  loadLatestStats();loadScaleHistory();
-  ['s-weight','s-bmi','s-fat','s-muscle','s-bmr','s-water','s-fatmass','s-lean','s-bone','s-visceral','s-protein','s-skeletal','s-subcut','s-bodyage','s-note'].forEach(function(id){document.getElementById(id).value='';});
-}
+async function saveScale(){var data={date:TODAY,user_id:currentUser,weight:v('s-weight'),bmi:v('s-bmi'),body_fat:v('s-fat'),muscle_mass:v('s-muscle'),bmr:vi('s-bmr'),water_pct:v('s-water'),body_fat_mass:v('s-fatmass'),lean_body_mass:v('s-lean'),bone_mass:v('s-bone'),visceral_fat:v('s-visceral'),protein_pct:v('s-protein'),skeletal_muscle_mass:v('s-skeletal'),subcutaneous_fat:v('s-subcut'),body_age:vi('s-bodyage'),notes:vs('s-note')};var hasData=Object.keys(data).some(function(k){return k!=='date'&&k!=='user_id'&&k!=='notes'&&data[k]!==null;});if(!hasData){showToast('أدخل قيمة واحدة على الأقل',true);return;}var ex=await sb.from('body_stats').select('id').eq('date',TODAY).eq('user_id',currentUser).single();if(ex.data){await sb.from('body_stats').update(data).eq('id',ex.data.id);}else{await sb.from('body_stats').insert(data);}showToast('تم حفظ القياسات ✓');loadLatestStats();loadScaleHistory();['s-weight','s-bmi','s-fat','s-muscle','s-bmr','s-water','s-fatmass','s-lean','s-bone','s-visceral','s-protein','s-skeletal','s-subcut','s-bodyage','s-note'].forEach(function(id){document.getElementById(id).value='';});}
 function v(id){var val=document.getElementById(id).value;return val?parseFloat(val):null;}
 function vi(id){var val=document.getElementById(id).value;return val?parseInt(val):null;}
 function vs(id){return document.getElementById(id).value||null;}
+async function loadLatestStats(){var r=await sb.from('body_stats').select('*').eq('user_id',currentUser).order('date',{ascending:false}).limit(1).single();if(r.data){var d=r.data;document.getElementById('h-weight').textContent=d.weight||'—';document.getElementById('h-fat').textContent=d.body_fat?d.body_fat+'%':'—';document.getElementById('h-muscle').textContent=d.muscle_mass||'—';document.getElementById('h-visceral').textContent=d.visceral_fat||'—';document.getElementById('h-bmr').textContent=d.bmr||'—';document.getElementById('h-bodyage').textContent=d.body_age||'—';}}
+async function loadScaleHistory(){var r=await sb.from('body_stats').select('*').eq('user_id',currentUser).order('date',{ascending:false}).limit(5);var el=document.getElementById('scale-history');if(!r.data||r.data.length===0){el.innerHTML='<div class="empty-state">لا توجد قياسات بعد</div>';return;}el.innerHTML='';r.data.forEach(function(x){var item=document.createElement('div');item.style.cssText='background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)';var vals=[];if(x.weight)vals.push('<span style="color:var(--accent)">'+x.weight+'kg</span>');if(x.body_fat)vals.push('<span style="color:var(--red)">'+x.body_fat+'% دهون</span>');if(x.muscle_mass)vals.push('<span style="color:var(--green)">'+x.muscle_mass+'kg عضل</span>');if(x.visceral_fat)vals.push('<span style="color:var(--amber)">حشوي:'+x.visceral_fat+'</span>');if(x.bmi)vals.push('<span style="color:var(--muted)">BMI:'+x.bmi+'</span>');item.innerHTML='<div style="font-size:12px;font-weight:700;margin-bottom:6px">'+x.date+(x.notes?' — <span style="color:var(--muted);font-weight:400">'+x.notes+'</span>':'')+'</div><div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600">'+vals.join('')+'</div>';el.appendChild(item);});}
+async function loadChartData(type){currentChartType=type;var r=await sb.from('body_stats').select('date,'+type).eq('user_id',currentUser).order('date',{ascending:true}).limit(60);var title=CHART_LABELS[type]||type;var color=CHART_COLORS[type]||'#4f8ef7';document.getElementById('chart-title').textContent=title;if(!r.data||r.data.length===0){if(chartInstance)chartInstance.destroy();return;}var labels=r.data.map(function(x){return x.date.slice(5);});var values=r.data.map(function(x){return x[type];});var ctx=document.getElementById('progress-chart').getContext('2d');if(chartInstance)chartInstance.destroy();chartInstance=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:title,data:values,borderColor:color,backgroundColor:color+'22',borderWidth:2,tension:0.4,fill:true,pointBackgroundColor:color,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7a8194',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#7a8194',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}}}}});}
+function switchChart(type,btn){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');loadChartData(type);}
 
-async function loadLatestStats(){
-  var r=await sb.from('body_stats').select('*').eq('user_id',currentUser).order('date',{ascending:false}).limit(1).single();
-  if(r.data){
-    var d=r.data;
-    document.getElementById('h-weight').textContent=d.weight||'—';
-    document.getElementById('h-fat').textContent=d.body_fat?d.body_fat+'%':'—';
-    document.getElementById('h-muscle').textContent=d.muscle_mass||'—';
-    document.getElementById('h-visceral').textContent=d.visceral_fat||'—';
-    document.getElementById('h-bmr').textContent=d.bmr||'—';
-    document.getElementById('h-bodyage').textContent=d.body_age||'—';
-  }
+var selectedPhotoFile = null;
+var currentModalPhotoId = null;
+var compareBeforeData = null;
+var compareAfterData = null;
+var allPhotos = [];
+var selectingCompare = null;
+
+function handlePhotoUpload(input) {
+  var file = input.files[0];
+  if (!file) return;
+  selectedPhotoFile = file;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('photo-preview-img').src = e.target.result;
+    document.getElementById('photo-preview').style.display = 'block';
+    document.getElementById('upload-btn').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
 }
 
-async function loadScaleHistory(){
-  var r=await sb.from('body_stats').select('*').eq('user_id',currentUser).order('date',{ascending:false}).limit(5);
-  var el=document.getElementById('scale-history');
-  if(!r.data||r.data.length===0){el.innerHTML='<div class="empty-state">لا توجد قياسات بعد</div>';return;}
-  el.innerHTML='';
-  r.data.forEach(function(x){
-    var item=document.createElement('div');
-    item.style.cssText='background:var(--surface2);border-radius:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--border)';
-    var vals=[];
-    if(x.weight)vals.push('<span style="color:var(--accent)">'+x.weight+'kg</span>');
-    if(x.body_fat)vals.push('<span style="color:var(--red)">'+x.body_fat+'% دهون</span>');
-    if(x.muscle_mass)vals.push('<span style="color:var(--green)">'+x.muscle_mass+'kg عضل</span>');
-    if(x.visceral_fat)vals.push('<span style="color:var(--amber)">حشوي:'+x.visceral_fat+'</span>');
-    if(x.bmi)vals.push('<span style="color:var(--muted)">BMI:'+x.bmi+'</span>');
-    item.innerHTML='<div style="font-size:12px;font-weight:700;margin-bottom:6px">'+x.date+(x.notes?' — <span style="color:var(--muted);font-weight:400">'+x.notes+'</span>':'')+'</div><div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600">'+vals.join('')+'</div>';
-    el.appendChild(item);
+async function uploadPhoto() {
+  if (!selectedPhotoFile) return;
+  var btn = document.getElementById('upload-btn');
+  btn.textContent = '⏳ جاري الرفع...';
+  btn.disabled = true;
+
+  var fileName = currentUser + '_' + Date.now() + '_' + selectedPhotoFile.name.replace(/[^a-zA-Z0-9.]/g,'_');
+  var uploadRes = await sb.storage.from('progress-photos').upload(fileName, selectedPhotoFile, {cacheControl:'3600',upsert:false});
+
+  if (uploadRes.error) {
+    showToast('خطأ في رفع الصورة', true);
+    btn.textContent = '📤 رفع الصورة';
+    btn.disabled = false;
+    return;
+  }
+
+  var urlRes = sb.storage.from('progress-photos').getPublicUrl(fileName);
+  var photoUrl = urlRes.data.publicUrl;
+
+  await sb.from('progress_photos').insert({
+    user_id: currentUser,
+    date: TODAY,
+    photo_url: photoUrl,
+    weight: v('p-weight'),
+    body_fat: v('p-fat'),
+    muscle_mass: v('p-muscle'),
+    visceral_fat: v('p-visceral'),
+    notes: vs('p-note')
+  });
+
+  showToast('تم رفع الصورة ✓');
+  selectedPhotoFile = null;
+  document.getElementById('photo-preview').style.display = 'none';
+  document.getElementById('upload-btn').style.display = 'none';
+  document.getElementById('upload-btn').textContent = '📤 رفع الصورة';
+  document.getElementById('upload-btn').disabled = false;
+  document.getElementById('photo-input').value = '';
+  ['p-weight','p-fat','p-muscle','p-visceral','p-note'].forEach(function(id){document.getElementById(id).value='';});
+  loadPhotos();
+}
+
+async function loadPhotos() {
+  var r = await sb.from('progress_photos').select('*').eq('user_id', currentUser).order('date', {ascending: false});
+  if (!r.data) return;
+  allPhotos = r.data;
+  document.getElementById('photos-count').textContent = r.data.length + ' صورة';
+  var grid = document.getElementById('photo-grid');
+  if (r.data.length === 0) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:span 2">لا توجد صور بعد</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  r.data.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'photo-card';
+    var stats = [];
+    if (p.weight) stats.push(p.weight + 'kg');
+    if (p.body_fat) stats.push(p.body_fat + '% دهون');
+    card.innerHTML = '<img src="'+p.photo_url+'" loading="lazy"><div class="photo-card-info"><div class="photo-card-date">'+p.date+'</div><div class="photo-card-stats">'+stats.join(' · ')+'</div></div>';
+    card.onclick = function() { openPhotoModal(p); };
+    grid.appendChild(card);
   });
 }
 
-// CHART
-async function loadChartData(type){
-  currentChartType=type;
-  var r=await sb.from('body_stats').select('date,'+type).eq('user_id',currentUser).order('date',{ascending:true}).limit(60);
-  var title=CHART_LABELS[type]||type;
-  var color=CHART_COLORS[type]||'#4f8ef7';
-  document.getElementById('chart-title').textContent=title;
-  if(!r.data||r.data.length===0){if(chartInstance)chartInstance.destroy();return;}
-  var labels=r.data.map(function(x){return x.date.slice(5);});
-  var values=r.data.map(function(x){return x[type];});
-  var ctx=document.getElementById('progress-chart').getContext('2d');
-  if(chartInstance)chartInstance.destroy();
-  chartInstance=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:title,data:values,borderColor:color,backgroundColor:color+'22',borderWidth:2,tension:0.4,fill:true,pointBackgroundColor:color,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7a8194',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}},y:{ticks:{color:'#7a8194',font:{size:10}},grid:{color:'rgba(255,255,255,0.05)'}}}}});
+function openPhotoModal(p) {
+  if (selectingCompare) {
+    setComparePhoto(selectingCompare, p);
+    selectingCompare = null;
+    return;
+  }
+  currentModalPhotoId = p.id;
+  document.getElementById('modal-img').src = p.photo_url;
+  document.getElementById('modal-date').textContent = p.date;
+  var stats = [];
+  if (p.weight) stats.push('الوزن: ' + p.weight + ' kg');
+  if (p.body_fat) stats.push('دهون: ' + p.body_fat + '%');
+  if (p.muscle_mass) stats.push('عضل: ' + p.muscle_mass + ' kg');
+  if (p.visceral_fat) stats.push('دهون حشوي: ' + p.visceral_fat);
+  if (p.notes) stats.push(p.notes);
+  document.getElementById('modal-stats').innerHTML = stats.join('<br>');
+  document.getElementById('photo-modal').classList.add('show');
 }
-function switchChart(type,btn){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');loadChartData(type);}
+
+function closePhotoModal() {
+  document.getElementById('photo-modal').classList.remove('show');
+  currentModalPhotoId = null;
+}
+
+async function deletePhoto() {
+  if (!currentModalPhotoId) return;
+  await sb.from('progress_photos').delete().eq('id', currentModalPhotoId);
+  closePhotoModal();
+  showToast('تم حذف الصورة');
+  loadPhotos();
+}
+
+function selectCompare(slot) {
+  if (allPhotos.length === 0) { showToast('ما في صور بعد', true); return; }
+  selectingCompare = slot;
+  showToast('اختر صورة من الألبوم 👆');
+  showSection('photos', document.querySelectorAll('.bnav-btn')[6]);
+  window.scrollTo(0, document.getElementById('photo-grid').offsetTop);
+}
+
+function setComparePhoto(slot, p) {
+  var el = document.getElementById('compare-' + slot);
+  el.innerHTML = '<img src="'+p.photo_url+'"><span class="compare-slot-label">'+p.date+'</span>';
+  el.classList.add('has-photo');
+  if (slot === 'before') compareBeforeData = p;
+  else compareAfterData = p;
+  if (compareBeforeData && compareAfterData) showCompareDiff();
+}
+
+function showCompareDiff() {
+  document.getElementById('compare-stats').style.display = 'block';
+  var b = compareBeforeData, a = compareAfterData;
+  document.getElementById('before-stats').innerHTML = '<div style="font-weight:700;margin-bottom:4px">'+b.date+'</div>'+(b.weight?'<div style="color:var(--accent)">'+b.weight+'kg</div>':'')+(b.body_fat?'<div style="color:var(--red)">'+b.body_fat+'%</div>':'');
+  document.getElementById('after-stats').innerHTML = '<div style="font-weight:700;margin-bottom:4px">'+a.date+'</div>'+(a.weight?'<div style="color:var(--accent)">'+a.weight+'kg</div>':'')+(a.body_fat?'<div style="color:var(--red)">'+a.body_fat+'%</div>':'');
+  var diffs = [];
+  if (b.weight && a.weight) { var dw = (a.weight - b.weight).toFixed(1); diffs.push((dw < 0 ? '✅ ' : '📈 ') + 'الوزن: ' + (dw > 0 ? '+' : '') + dw + ' kg'); }
+  if (b.body_fat && a.body_fat) { var df = (a.body_fat - b.body_fat).toFixed(1); diffs.push((df < 0 ? '✅ ' : '📈 ') + 'الدهون: ' + (df > 0 ? '+' : '') + df + '%'); }
+  if (b.muscle_mass && a.muscle_mass) { var dm = (a.muscle_mass - b.muscle_mass).toFixed(1); diffs.push((dm > 0 ? '✅ ' : '📉 ') + 'العضل: ' + (dm > 0 ? '+' : '') + dm + ' kg'); }
+  if (b.visceral_fat && a.visceral_fat) { var dv = (a.visceral_fat - b.visceral_fat).toFixed(1); diffs.push((dv < 0 ? '✅ ' : '📈 ') + 'الدهون الحشوية: ' + (dv > 0 ? '+' : '') + dv); }
+  document.getElementById('diff-stats').innerHTML = diffs.length > 0 ? diffs.join('<br>') : 'أضف قياسات للصور لرؤية الفرق';
+}
 
 function showToast(msg,isError){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(isError?' error':'');setTimeout(function(){t.classList.remove('show');},2000);}
 window.addEventListener('load',function(){loadUser2Card();});

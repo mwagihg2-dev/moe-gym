@@ -1063,12 +1063,10 @@ async function sendToAi(userText, photoBase64, isSystem) {
   aiMessages.push({role:'user', content: userContent.length===1 ? userContent[0].text : userContent});
 
   try {
-    var response = await fetch('https://api.anthropic.com/v1/messages', {
+    var response = await fetch('https://dtifzpbeoiuwjsfoyyir.supabase.co/functions/v1/ai-nutrition', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
         system: systemPrompt,
         messages: aiMessages
       })

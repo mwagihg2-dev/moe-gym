@@ -695,8 +695,8 @@ async function createUser(){var u=document.getElementById('new-username').value.
 function setUser2Card(u){var c=document.getElementById('user2-card');c.onclick=function(){selectUser(u);};c.querySelector('.user-avatar').textContent=u[0].toUpperCase();c.querySelector('.user-avatar').style.cssText='width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#2ecc8a,#1a9e63);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;font-weight:800;color:white';c.querySelector('.user-name').textContent=u;c.querySelector('.user-name').style.color='';c.querySelector('.user-hint').textContent='أدخل الرقم السري';c.classList.remove('new-user');}
 function backToUsers(){pinBuffer='';document.getElementById('user-select-view').style.display='block';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='none';loadUser2Card();}
 async function loadUser2Card(){var r=await sb.from('users').select('username').neq('username','wagih').limit(1).single();if(r.data)setUser2Card(r.data.username);}
-function loginSuccess(u){currentUser=u;document.body.classList.add('logged-in');document.getElementById('user-badge').textContent=u;document.getElementById('hero-name-text').textContent=u;document.getElementById('settings-username').textContent=u;init();checkSecurityQuestionSetup();}
-async function checkSecurityQuestionSetup(){var r=await sb.from('users').select('security_question').eq('username',currentUser).single();if(r.data&&!r.data.security_question){setTimeout(function(){showSecQScreen();},1000);}}
+function loginSuccess(u){currentUser=u;document.body.classList.add('logged-in');document.getElementById('user-badge').textContent=u;document.getElementById('hero-name-text').textContent=u;document.getElementById('settings-username').textContent=u;init();}
+async function checkSecurityQuestionSetup(){/* disabled auto-prompt */}
 function showSecQScreen(){document.body.classList.remove('logged-in');document.getElementById('login-screen').style.display='flex';document.getElementById('user-select-view').style.display='none';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='none';document.getElementById('forgot-screen').style.display='none';document.getElementById('sec-q-screen').style.display='flex';}
 async function saveSecurityQuestion(){var q=document.getElementById('sq-select').value;var a=document.getElementById('sq-answer').value.trim();if(!q||!a){document.getElementById('sq-error').textContent='اختر سؤالاً وأدخل الإجابة';return;}await sb.from('users').update({security_question:q,security_answer:a.toLowerCase()}).eq('username',currentUser);document.getElementById('login-screen').style.display='none';document.body.classList.add('logged-in');showToast('تم حفظ سؤال الأمان ✓');}
 function showSecQFromSettings(){document.getElementById("sq-select").value="";document.getElementById("sq-answer").value="";document.getElementById("sq-error").textContent="";showSecQScreen();}
@@ -839,6 +839,10 @@ async function loadPhotos() {
   });
 }
 
+function openPhotoById(pid) {
+  var p = window.__photos && window.__photos[pid];
+  if (p) openPhotoModal(p);
+}
 function openPhotoModal(p) {
   if (typeof p === 'string') p = JSON.parse(p.replace(/'/g,'"'));
   currentModalPhotoId = p.id;
@@ -918,7 +922,11 @@ function renderCompare() {
       var div = document.createElement('div');
       div.className = 'compare-photo';
       if (p) {
+        var cpid = 'cp_'+p.id;
+        window.__photos = window.__photos||{};
+        window.__photos[cpid] = p;
         div.innerHTML = '<img src="'+p.photo_url+'" loading="lazy"><div class="compare-photo-label">'+ANGLE_LABELS[angle]+'</div>';
+        div.onclick = function(){ openPhotoById(cpid); };
       } else {
         div.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:8px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center';
         div.innerHTML = '<span style="font-size:10px;color:var(--muted)">—</span>';

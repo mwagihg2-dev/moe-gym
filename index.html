@@ -1051,17 +1051,7 @@ async function sendToAi(userText, photoBase64, isSystem) {
   var tk=dk[new Date().getDay()];
   Object.keys(todayChecks).forEach(function(k){ if(k.startsWith('ex_'+tk) && todayChecks[k]) todayExercised=true; });
 
-  var systemPrompt = 'أنت مساعد تغذية ذكي متخصص في اللياقة البدنية. تتحدث بالعربية بأسلوب واضح ومباشر.
-
-' +
-    statsContext + '
-' +
-    'الهدف: بناء عضل وحرق دهون. الهدف اليومي: 1800 سعرة، 150g بروتين، 180g كارب، 60g دهون.
-' +
-    'هل تمرن اليوم: ' + (todayExercised ? 'نعم' : 'لا') + '.
-
-' +
-    'عند تحليل الأطعمة: أعطِ تقييم مختصر (مناسب/غير مناسب/بحذر) مع السبب، السعرات التقريبية، والبروتين. كن موجزاً.';
+  var systemPrompt = 'You are a smart nutrition assistant. Always respond in Arabic. User: ' + statsContext + ' Daily goal: 1800 cal, 150g protein. Trained today: ' + (todayExercised?'yes':'no') + '. Goal: muscle & fat loss. For food analysis: give brief rating suitable/not suitable, calories, protein. Be concise.';
 
   var userContent = [];
   if (photoBase64) {

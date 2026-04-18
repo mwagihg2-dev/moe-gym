@@ -30,6 +30,7 @@ body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;fon
 .user-name{font-size:16px;font-weight:700}
 .user-hint{font-size:12px;color:var(--muted)}
 .user-card.new-user{border-style:dashed}
+#forgot-screen[style*="display:none"],#sec-q-screen[style*="display:none"]{pointer-events:none;height:0;overflow:hidden}
 #pin-screen{width:100%;max-width:340px;display:none;flex-direction:column;align-items:center}
 .pin-title{font-size:16px;font-weight:700;margin-bottom:6px}
 .pin-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;text-align:center}
@@ -246,7 +247,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
   </div>
 
   <!-- FORGOT PASSWORD SCREEN -->
-  <div id="forgot-screen" style="width:100%;max-width:340px;display:none;flex-direction:column;align-items:center">
+  <div id="forgot-screen" style="position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem">
     <div class="pin-title">استعادة الرقم السري</div>
     <div class="pin-sub" style="margin-bottom:1rem">أجب على سؤال الأمان</div>
     <div class="sec-q-wrap">
@@ -263,7 +264,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
   </div>
 
   <!-- SET SECURITY QUESTION SCREEN -->
-  <div id="sec-q-screen" style="width:100%;max-width:340px;display:none;flex-direction:column;align-items:center">
+  <div id="sec-q-screen" style="position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem">
     <div class="pin-title">إعداد سؤال الأمان</div>
     <div class="pin-sub" style="margin-bottom:1rem">يُستخدم لاستعادة رقمك السري</div>
     <div class="sec-q-wrap">
@@ -693,7 +694,7 @@ async function checkPin(){var r=await sb.from('users').select('*').eq('username'
 function showNewUser(){document.getElementById('user-select-view').style.display='none';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='flex';}
 async function createUser(){var u=document.getElementById('new-username').value.trim();var p=document.getElementById('new-pin').value.trim();if(!u||!p){showToast('أدخل الاسم والرقم السري',true);return;}var ex=await sb.from('users').select('id').eq('username',u).single();if(ex.data){showToast('الاسم مستخدم بالفعل',true);return;}var r=await sb.from('users').insert({username:u,pin:p});if(!r.error){setUser2Card(u);loginSuccess(u);}else{showToast('خطأ في الإنشاء',true);}}
 function setUser2Card(u){var c=document.getElementById('user2-card');c.onclick=function(){selectUser(u);};c.querySelector('.user-avatar').textContent=u[0].toUpperCase();c.querySelector('.user-avatar').style.cssText='width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,#2ecc8a,#1a9e63);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;font-weight:800;color:white';c.querySelector('.user-name').textContent=u;c.querySelector('.user-name').style.color='';c.querySelector('.user-hint').textContent='أدخل الرقم السري';c.classList.remove('new-user');}
-function backToUsers(){pinBuffer='';document.getElementById('user-select-view').style.display='block';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='none';loadUser2Card();}
+function backToUsers(){pinBuffer='';document.getElementById('user-select-view').style.display='block';document.getElementById('pin-screen').style.display='none';document.getElementById('new-user-screen').style.display='none';document.getElementById('forgot-screen').style.display='none';document.getElementById('sec-q-screen').style.display='none';loadUser2Card();}
 async function loadUser2Card(){var r=await sb.from('users').select('username').neq('username','wagih').limit(1).single();if(r.data)setUser2Card(r.data.username);}
 function loginSuccess(u){currentUser=u;document.body.classList.add('logged-in');document.getElementById('user-badge').textContent=u;document.getElementById('hero-name-text').textContent=u;document.getElementById('settings-username').textContent=u;init();}
 async function checkSecurityQuestionSetup(){/* disabled auto-prompt */}

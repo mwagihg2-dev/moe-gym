@@ -1063,14 +1063,13 @@ async function sendToAi(userText, photoBase64, isSystem) {
   aiMessages.push({role:'user', content: userContent.length===1 ? userContent[0].text : userContent});
 
   try {
-    var openaiMessages = [{role:'system',content:systemPrompt}].concat(aiMessages.map(function(m){return {role:m.role,content:typeof m.content==='string'?m.content:m.content[m.content.length-1].text||''};}));
-    var response = await fetch('https://api.openai.com/v1/chat/completions', {
+    var response = await fetch('https://dtifzpbeoiuwjsfoyyir.supabase.co/functions/v1/ai-nutrition', {
       method: 'POST',
-      headers: {'Content-Type':'application/json','Authorization':'Bearer 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'},
-      body: JSON.stringify({model:'gpt-4o-mini',max_tokens:1000,messages:openaiMessages})
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({system: systemPrompt, messages: aiMessages})
     });
     var data = await response.json();
-    var replyText = data.choices && data.choices[0] ? data.choices[0].message.content : 'حدث خطأ، حاول مرة أخرى.';
+    var replyText = data.content && data.content[0] ? data.content[0].text : 'حدث خطأ، حاول مرة أخرى.';
     loadDiv.textContent = replyText;
     loadDiv.classList.remove('loading');
     aiMessages.push({role:'assistant', content: replyText});

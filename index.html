@@ -191,6 +191,23 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
 
 .sec-q-wrap{width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .forgot-link{text-align:center;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;-webkit-tap-highlight-color:transparent}
+
+.ai-chat-wrap{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto;padding:4px 0;margin-bottom:12px}
+.ai-msg{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.7;max-width:90%}
+.ai-msg.user{background:rgba(79,142,247,0.15);color:var(--text);align-self:flex-end;border-radius:12px 12px 4px 12px}
+.ai-msg.assistant{background:var(--surface2);color:var(--text);align-self:flex-start;border-radius:12px 12px 12px 4px;border:1px solid var(--border)}
+.ai-msg.loading{color:var(--muted);font-style:italic}
+.ai-input-row{display:flex;gap:8px;align-items:flex-end}
+.ai-input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:16px;flex:1;resize:none;min-height:44px;max-height:100px;-webkit-appearance:none}
+.ai-input:focus{outline:none;border-color:var(--accent)}
+.ai-send-btn{background:var(--accent);border:none;border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:18px;-webkit-tap-highlight-color:transparent}
+.ai-send-btn:active{opacity:0.8}
+.ai-action-btn{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;text-align:right;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s;display:flex;align-items:center;gap:10px}
+.ai-action-btn:active{border-color:var(--accent)}
+.ai-action-icon{font-size:22px;flex-shrink:0}
+.ai-action-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.photo-upload-trigger{background:var(--surface2);border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:13px;color:var(--muted)}
+.photo-upload-trigger:active{border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -331,10 +348,69 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
   </div>
 
   <div id="sec-nutrition" class="section">
-    <div class="section-title">وجبات <span>اليوم</span></div>
-    <div class="card"><div class="card-title">الماكرو اليومي</div><div class="metric-row"><div class="metric"><div class="metric-val" style="color:var(--accent)">1800</div><div class="metric-lbl">سعرة</div></div><div class="metric"><div class="metric-val" style="color:var(--green)">150g</div><div class="metric-lbl">بروتين</div></div><div class="metric"><div class="metric-val" style="color:var(--amber)">180g</div><div class="metric-lbl">كارب</div></div></div></div>
-    <div class="card"><div class="card-title"><span>الوجبات</span><span id="meal-prog-badge" class="badge badge-green"></span></div><div id="meal-list"></div></div>
-    <div class="card"><div class="card-title">مصادر البروتين</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div></div></div>
+    <div class="section-title">تغذية <span>ذكية</span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchNutTab('plan',this)">📋 خطة اليوم</button>
+      <button class="tab-btn" onclick="switchNutTab('ai',this)">🤖 مساعد AI</button>
+    </div>
+
+    <!-- TAB 1: PLAN -->
+    <div id="nut-plan">
+      <div class="card"><div class="card-title">الماكرو اليومي</div><div class="metric-row"><div class="metric"><div class="metric-val" style="color:var(--accent)">1800</div><div class="metric-lbl">سعرة</div></div><div class="metric"><div class="metric-val" style="color:var(--green)">150g</div><div class="metric-lbl">بروتين</div></div><div class="metric"><div class="metric-val" style="color:var(--amber)">180g</div><div class="metric-lbl">كارب</div></div></div></div>
+      <div class="card"><div class="card-title"><span>الوجبات</span><span id="meal-prog-badge" class="badge badge-green"></span></div><div id="meal-list"></div></div>
+      <div class="card"><div class="card-title">مصادر البروتين</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div></div></div>
+    </div>
+
+    <!-- TAB 2: AI -->
+    <div id="nut-ai" style="display:none">
+
+      <!-- ACTION BUTTONS -->
+      <div class="card">
+        <div class="card-title">ماذا تريد؟</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="ai-action-btn" onclick="aiQuickAction('analyze_meal')">
+            <span class="ai-action-icon">🍽️</span>
+            <div><div>حلّل وجبتي</div><div class="ai-action-desc">أخبرني ايش راح تاكل وأقيّم لك</div></div>
+          </button>
+          <button class="ai-action-btn" onclick="aiQuickAction('scan_product')">
+            <span class="ai-action-icon">📸</span>
+            <div><div>صوّر منتج</div><div class="ai-action-desc">ارفع صورة المنتج وأقرأ لك المكونات</div></div>
+          </button>
+          <button class="ai-action-btn" onclick="aiQuickAction('suggest_meal')">
+            <span class="ai-action-icon">💡</span>
+            <div><div>اقترح لي وجبة</div><div class="ai-action-desc">قولي ايش عندك وأسوي لك وجبة محسوبة</div></div>
+          </button>
+          <button class="ai-action-btn" onclick="aiQuickAction('daily_review')">
+            <span class="ai-action-icon">📊</span>
+            <div><div>راجع يومي الغذائي</div><div class="ai-action-desc">أقيّم كل ما أكلته اليوم</div></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- IMAGE UPLOAD -->
+      <div class="card" id="ai-photo-card" style="display:none">
+        <div class="card-title">ارفع صورة المنتج</div>
+        <div class="photo-upload-trigger" onclick="document.getElementById('ai-photo-input').click()">
+          <div style="font-size:28px;margin-bottom:6px">📸</div>
+          <div>اضغط لاختيار صورة</div>
+        </div>
+        <input type="file" id="ai-photo-input" accept="image/*" style="display:none" onchange="handleAiPhoto(this)">
+        <div id="ai-photo-preview" style="display:none;margin-top:10px">
+          <img id="ai-photo-img" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover">
+        </div>
+      </div>
+
+      <!-- CHAT -->
+      <div class="card">
+        <div class="card-title">المحادثة</div>
+        <div class="ai-chat-wrap" id="ai-chat"></div>
+        <div class="ai-input-row">
+          <textarea class="ai-input" id="ai-input" placeholder="اكتب هنا..." rows="1" onkeydown="aiKeyDown(event)"></textarea>
+          <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <div id="sec-supplements" class="section">
@@ -864,6 +940,153 @@ function renderCompare() {
   var header = '<div style="font-weight:700;margin-bottom:8px;color:var(--accent)">الفرق خلال '+days+' يوم</div>';
   document.getElementById('diff-stats').innerHTML = header + (diffs.length > 0 ? diffs.join('<br>') : 'أضف قراءات للجلسات لرؤية الفرق');
 }
+
+
+// NUTRITION AI
+var aiMessages = [];
+var aiPhotoBase64 = null;
+var aiPendingAction = null;
+
+function switchNutTab(tab, btn) {
+  document.querySelectorAll('.tabs .tab-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  document.getElementById('nut-plan').style.display = tab==='plan' ? 'block' : 'none';
+  document.getElementById('nut-ai').style.display = tab==='ai' ? 'block' : 'none';
+}
+
+function aiQuickAction(action) {
+  aiPendingAction = action;
+  var prompts = {
+    analyze_meal: 'سأحلل لك وجبتك — أخبرني ايش راح تاكل؟',
+    scan_product: null,
+    suggest_meal: 'ممتاز — ايش المكونات اللي عندك الحين؟',
+    daily_review: null
+  };
+
+  if (action === 'scan_product') {
+    document.getElementById('ai-photo-card').style.display = 'block';
+    document.getElementById('ai-photo-card').scrollIntoView({behavior:'smooth'});
+    return;
+  }
+
+  if (action === 'daily_review') {
+    var meals = [];
+    var MEAL_LABELS = {breakfast:'الإفطار',snack1:'وجبة خفيفة',lunch:'الغداء',preworkout:'ما قبل التمرين',postworkout:'بعد التمرين',dinner:'العشاء'};
+    Object.keys(todayChecks).forEach(function(k){
+      if(k.startsWith('meal_') && todayChecks[k]) meals.push(MEAL_LABELS[k.replace('meal_','')] || k);
+    });
+    var mealText = meals.length > 0 ? 'الوجبات المكتملة اليوم: ' + meals.join('، ') : 'لم تسجل أي وجبات اليوم بعد.';
+    sendToAi('راجع يومي الغذائي. ' + mealText, null, true);
+    return;
+  }
+
+  addAiMessage('assistant', prompts[action]);
+  document.getElementById('ai-input').focus();
+}
+
+function handleAiPhoto(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    aiPhotoBase64 = e.target.result.split(',')[1];
+    var img = document.getElementById('ai-photo-img');
+    img.src = e.target.result;
+    document.getElementById('ai-photo-preview').style.display = 'block';
+    sendToAi('حلل هذا المنتج الغذائي وأخبرني هل هو مناسب لهدفي.', aiPhotoBase64, true);
+    document.getElementById('ai-photo-card').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function addAiMessage(role, text) {
+  var wrap = document.getElementById('ai-chat');
+  var div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  div.textContent = text;
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+  return div;
+}
+
+function aiKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendAiMessage();
+  }
+}
+
+async function sendAiMessage() {
+  var input = document.getElementById('ai-input');
+  var text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  sendToAi(text, null, false);
+}
+
+async function sendToAi(userText, photoBase64, isSystem) {
+  if (!isSystem) addAiMessage('user', userText);
+
+  var loadDiv = addAiMessage('assistant loading', '...');
+
+  // Build user context from latest stats
+  var statsContext = '';
+  try {
+    var r = await sb.from('body_stats').select('*').eq('user_id',currentUser).order('date',{ascending:false}).limit(1).single();
+    if (r.data) {
+      statsContext = 'بيانات المستخدم الحالية: الوزن ' + (r.data.weight||'غير محدد') + 'kg، الدهون ' + (r.data.body_fat||'غير محدد') + '%، العضل ' + (r.data.muscle_mass||'غير محدد') + 'kg، BMR ' + (r.data.bmr||1739) + ' سعرة.';
+    }
+  } catch(e) {}
+
+  var todayExercised = false;
+  var dk=['sun','mon','tue','wed','thu','fri','sat'];
+  var tk=dk[new Date().getDay()];
+  Object.keys(todayChecks).forEach(function(k){ if(k.startsWith('ex_'+tk) && todayChecks[k]) todayExercised=true; });
+
+  var systemPrompt = 'أنت مساعد تغذية ذكي متخصص في اللياقة البدنية. تتحدث بالعربية بأسلوب واضح ومباشر.
+
+' +
+    statsContext + '
+' +
+    'الهدف: بناء عضل وحرق دهون. الهدف اليومي: 1800 سعرة، 150g بروتين، 180g كارب، 60g دهون.
+' +
+    'هل تمرن اليوم: ' + (todayExercised ? 'نعم' : 'لا') + '.
+
+' +
+    'عند تحليل الأطعمة: أعطِ تقييم مختصر (مناسب/غير مناسب/بحذر) مع السبب، السعرات التقريبية، والبروتين. كن موجزاً.';
+
+  var userContent = [];
+  if (photoBase64) {
+    userContent.push({type:'image', source:{type:'base64', media_type:'image/jpeg', data:photoBase64}});
+  }
+  userContent.push({type:'text', text: isSystem ? userText : userText});
+
+  aiMessages.push({role:'user', content: userContent.length===1 ? userContent[0].text : userContent});
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: aiMessages
+      })
+    });
+
+    var data = await response.json();
+    var replyText = data.content && data.content[0] ? data.content[0].text : 'حدث خطأ، حاول مرة أخرى.';
+    loadDiv.textContent = replyText;
+    loadDiv.classList.remove('loading');
+    aiMessages.push({role:'assistant', content: replyText});
+    aiPhotoBase64 = null;
+  } catch(e) {
+    loadDiv.textContent = 'خطأ في الاتصال، حاول مرة أخرى.';
+    loadDiv.classList.remove('loading');
+  }
+}
+
 
 function showToast(msg,isError){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(isError?' error':'');setTimeout(function(){t.classList.remove('show');},2000);}
 window.addEventListener('load',function(){loadUser2Card();});

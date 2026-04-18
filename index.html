@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -137,79 +138,80 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
 .scale-section-title{font-size:13px;font-weight:700;color:var(--accent);margin:14px 0 8px;text-transform:uppercase;letter-spacing:0.06em}
 
 .photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-.photo-card{position:relative;border-radius:12px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);aspect-ratio:3/4;cursor:pointer}
+.photo-card{position:relative;border-radius:12px;overflow:hidden;background:var(–surface2);border:1px solid var(–border);aspect-ratio:3/4;cursor:pointer}
 .photo-card img{width:100%;height:100%;object-fit:cover}
 .photo-card-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:8px;font-size:11px}
 .photo-card-date{font-weight:700;color:white}
 .photo-card-stats{color:rgba(255,255,255,0.7);margin-top:2px}
-.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:12px}
-.photo-upload-area:active{border-color:var(--accent)}
+.photo-upload-area{border:2px dashed var(–border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;margin-bottom:12px}
+.photo-upload-area:active{border-color:var(–accent)}
 .photo-upload-icon{font-size:32px;margin-bottom:8px}
-.photo-upload-text{font-size:13px;color:var(--muted)}
+.photo-upload-text{font-size:13px;color:var(–muted)}
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.compare-slot{background:var(--surface2);border:2px dashed var(--border);border-radius:12px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.compare-slot{background:var(–surface2);border:2px dashed var(–border);border-radius:12px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent}
 .compare-slot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-.compare-slot-label{font-size:11px;color:var(--muted);margin-top:6px;position:relative;z-index:1}
+.compare-slot-label{font-size:11px;color:var(–muted);margin-top:6px;position:relative;z-index:1}
 .compare-slot-icon{font-size:24px;position:relative;z-index:1}
 .compare-slot.has-photo .compare-slot-icon{display:none}
 .compare-slot.has-photo .compare-slot-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;color:white;font-weight:700;background:rgba(0,0,0,0.5);padding:3px;font-size:10px;z-index:2}
 
-.photo-upload-slot{background:var(--surface2);border:2px dashed var(--border);border-radius:10px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s}
-.photo-upload-slot:active{border-color:var(--accent)}
-.photo-upload-slot.has-photo{border-style:solid;border-color:var(--green)}
+.photo-upload-slot{background:var(–surface2);border:2px dashed var(–border);border-radius:10px;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s}
+.photo-upload-slot:active{border-color:var(–accent)}
+.photo-upload-slot.has-photo{border-style:solid;border-color:var(–green)}
 .photo-upload-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .slot-icon{font-size:20px;position:relative;z-index:1}
-.slot-label{font-size:10px;color:var(--muted);margin-top:4px;position:relative;z-index:1}
-.session-card{background:var(--surface2);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid var(--border)}
+.slot-label{font-size:10px;color:var(–muted);margin-top:4px;position:relative;z-index:1}
+.session-card{background:var(–surface2);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid var(–border)}
 .session-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .session-date{font-size:14px;font-weight:700}
-.session-stats{font-size:11px;color:var(--muted);line-height:1.8}
+.session-stats{font-size:11px;color:var(–muted);line-height:1.8}
 .session-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
 .session-photo{border-radius:8px;overflow:hidden;aspect-ratio:3/4;position:relative;cursor:pointer}
 .session-photo img{width:100%;height:100%;object-fit:cover}
 .session-photo-label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);font-size:9px;color:white;text-align:center;padding:3px;font-weight:700}
-.compare-session-slot{background:var(--surface2);border:2px dashed var(--border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s}
-.compare-session-slot:active{border-color:var(--accent)}
-.compare-session-slot.selected{border-style:solid;border-color:var(--accent);background:rgba(79,142,247,0.08)}
+.compare-session-slot{background:var(–surface2);border:2px dashed var(–border);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s}
+.compare-session-slot:active{border-color:var(–accent)}
+.compare-session-slot.selected{border-style:solid;border-color:var(–accent);background:rgba(79,142,247,0.08)}
 .compare-photo{border-radius:8px;overflow:hidden;aspect-ratio:3/4;position:relative}
 .compare-photo img{width:100%;height:100%;object-fit:cover}
 .compare-photo-label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);font-size:9px;color:white;text-align:center;padding:3px;font-weight:700}
 .session-picker{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:flex-end;justify-content:center;padding:1rem}
 .session-picker.show{display:flex}
-.session-picker-box{background:var(--surface);border-radius:16px;padding:1.25rem;width:100%;max-height:70vh;overflow-y:auto}
-.session-pick-item{padding:12px;border-bottom:1px solid var(--border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.session-picker-box{background:var(–surface);border-radius:16px;padding:1.25rem;width:100%;max-height:70vh;overflow-y:auto}
+.session-pick-item{padding:12px;border-bottom:1px solid var(–border);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .session-pick-item:last-child{border-bottom:none}
-.session-pick-item:active{background:var(--surface2);border-radius:8px}
+.session-pick-item:active{background:var(–surface2);border-radius:8px}
 
 .photo-modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:1rem}
 .photo-modal.show{display:flex}
 .photo-modal img{max-width:100%;max-height:70vh;border-radius:12px;object-fit:contain}
 .photo-modal-info{margin-top:1rem;text-align:center}
 .photo-modal-date{font-size:16px;font-weight:700}
-.photo-modal-stats{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.8}
+.photo-modal-stats{font-size:13px;color:var(–muted);margin-top:4px;line-height:1.8}
 .photo-modal-close{position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:16px;background:rgba(255,255,255,0.1);border:none;color:white;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.photo-modal-delete{margin-top:1rem;background:rgba(232,64,64,0.15);color:var(--red);border:1px solid rgba(232,64,64,0.3);border-radius:10px;padding:10px 20px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.photo-modal-delete{margin-top:1rem;background:rgba(232,64,64,0.15);color:var(–red);border:1px solid rgba(232,64,64,0.3);border-radius:10px;padding:10px 20px;font-family:‘Tajawal’,sans-serif;font-size:13px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
 
 .sec-q-wrap{width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.forgot-link{text-align:center;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;-webkit-tap-highlight-color:transparent}
+.forgot-link{text-align:center;color:var(–accent);font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;-webkit-tap-highlight-color:transparent}
 
 .ai-chat-wrap{display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto;padding:4px 0;margin-bottom:12px}
 .ai-msg{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.7;max-width:90%}
-.ai-msg.user{background:rgba(79,142,247,0.15);color:var(--text);align-self:flex-end;border-radius:12px 12px 4px 12px}
-.ai-msg.assistant{background:var(--surface2);color:var(--text);align-self:flex-start;border-radius:12px 12px 12px 4px;border:1px solid var(--border)}
-.ai-msg.loading{color:var(--muted);font-style:italic}
+.ai-msg.user{background:rgba(79,142,247,0.15);color:var(–text);align-self:flex-end;border-radius:12px 12px 4px 12px}
+.ai-msg.assistant{background:var(–surface2);color:var(–text);align-self:flex-start;border-radius:12px 12px 12px 4px;border:1px solid var(–border)}
+.ai-msg.loading{color:var(–muted);font-style:italic}
 .ai-input-row{display:flex;gap:8px;align-items:flex-end}
-.ai-input{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:16px;flex:1;resize:none;min-height:44px;max-height:100px;-webkit-appearance:none}
-.ai-input:focus{outline:none;border-color:var(--accent)}
-.ai-send-btn{background:var(--accent);border:none;border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:18px;-webkit-tap-highlight-color:transparent}
+.ai-input{background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:10px 12px;color:var(–text);font-family:‘Tajawal’,sans-serif;font-size:16px;flex:1;resize:none;min-height:44px;max-height:100px;-webkit-appearance:none}
+.ai-input:focus{outline:none;border-color:var(–accent)}
+.ai-send-btn{background:var(–accent);border:none;border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:18px;-webkit-tap-highlight-color:transparent}
 .ai-send-btn:active{opacity:0.8}
-.ai-action-btn{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;text-align:right;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s;display:flex;align-items:center;gap:10px}
-.ai-action-btn:active{border-color:var(--accent)}
+.ai-action-btn{background:var(–surface2);border:1px solid var(–border);border-radius:10px;padding:12px;font-family:‘Tajawal’,sans-serif;font-size:13px;font-weight:600;color:var(–text);cursor:pointer;text-align:right;-webkit-tap-highlight-color:transparent;transition:border-color 0.15s;display:flex;align-items:center;gap:10px}
+.ai-action-btn:active{border-color:var(–accent)}
 .ai-action-icon{font-size:22px;flex-shrink:0}
-.ai-action-desc{font-size:11px;color:var(--muted);margin-top:2px}
-.photo-upload-trigger{background:var(--surface2);border:2px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:13px;color:var(--muted)}
-.photo-upload-trigger:active{border-color:var(--accent)}
+.ai-action-desc{font-size:11px;color:var(–muted);margin-top:2px}
+.photo-upload-trigger{background:var(–surface2);border:2px dashed var(–border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:13px;color:var(–muted)}
+.photo-upload-trigger:active{border-color:var(–accent)}
 </style>
+
 </head>
 <body>
 
@@ -247,6 +249,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
   </div>
 
   <!-- FORGOT PASSWORD SCREEN -->
+
   <div id="forgot-screen" style="position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem">
     <div class="pin-title">استعادة الرقم السري</div>
     <div class="pin-sub" style="margin-bottom:1rem">أجب على سؤال الأمان</div>
@@ -264,6 +267,7 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
   </div>
 
   <!-- SET SECURITY QUESTION SCREEN -->
+
   <div id="sec-q-screen" style="position:fixed;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem">
     <div class="pin-title">إعداد سؤال الأمان</div>
     <div class="pin-sub" style="margin-bottom:1rem">يُستخدم لاستعادة رقمك السري</div>
@@ -355,63 +359,66 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
       <button class="tab-btn" onclick="switchNutTab('ai',this)">🤖 مساعد AI</button>
     </div>
 
-    <!-- TAB 1: PLAN -->
-    <div id="nut-plan">
-      <div class="card"><div class="card-title">الماكرو اليومي</div><div class="metric-row"><div class="metric"><div class="metric-val" style="color:var(--accent)">1800</div><div class="metric-lbl">سعرة</div></div><div class="metric"><div class="metric-val" style="color:var(--green)">150g</div><div class="metric-lbl">بروتين</div></div><div class="metric"><div class="metric-val" style="color:var(--amber)">180g</div><div class="metric-lbl">كارب</div></div></div></div>
-      <div class="card"><div class="card-title"><span>الوجبات</span><span id="meal-prog-badge" class="badge badge-green"></span></div><div id="meal-list"></div></div>
-      <div class="card"><div class="card-title">مصادر البروتين</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div></div></div>
+```
+<!-- TAB 1: PLAN -->
+<div id="nut-plan">
+  <div class="card"><div class="card-title">الماكرو اليومي</div><div class="metric-row"><div class="metric"><div class="metric-val" style="color:var(--accent)">1800</div><div class="metric-lbl">سعرة</div></div><div class="metric"><div class="metric-val" style="color:var(--green)">150g</div><div class="metric-lbl">بروتين</div></div><div class="metric"><div class="metric-val" style="color:var(--amber)">180g</div><div class="metric-lbl">كارب</div></div></div></div>
+  <div class="card"><div class="card-title"><span>الوجبات</span><span id="meal-prog-badge" class="badge badge-green"></span></div><div id="meal-list"></div></div>
+  <div class="card"><div class="card-title">مصادر البروتين</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>صدر الدجاج</b><div style="color:var(--muted)">31g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>البيض</b><div style="color:var(--muted)">6g / بيضة</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>التونة</b><div style="color:var(--muted)">25g / 100g</div></div><div style="background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;border:1px solid var(--border)"><b>الزبادي اليوناني</b><div style="color:var(--muted)">10g / 100g</div></div></div></div>
+</div>
+
+<!-- TAB 2: AI -->
+<div id="nut-ai" style="display:none">
+
+  <!-- ACTION BUTTONS -->
+  <div class="card">
+    <div class="card-title">ماذا تريد؟</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="ai-action-btn" onclick="aiQuickAction('analyze_meal')">
+        <span class="ai-action-icon">🍽️</span>
+        <div><div>حلّل وجبتي</div><div class="ai-action-desc">أخبرني ايش راح تاكل وأقيّم لك</div></div>
+      </button>
+      <button class="ai-action-btn" onclick="aiQuickAction('scan_product')">
+        <span class="ai-action-icon">📸</span>
+        <div><div>صوّر منتج</div><div class="ai-action-desc">ارفع صورة المنتج وأقرأ لك المكونات</div></div>
+      </button>
+      <button class="ai-action-btn" onclick="aiQuickAction('suggest_meal')">
+        <span class="ai-action-icon">💡</span>
+        <div><div>اقترح لي وجبة</div><div class="ai-action-desc">قولي ايش عندك وأسوي لك وجبة محسوبة</div></div>
+      </button>
+      <button class="ai-action-btn" onclick="aiQuickAction('daily_review')">
+        <span class="ai-action-icon">📊</span>
+        <div><div>راجع يومي الغذائي</div><div class="ai-action-desc">أقيّم كل ما أكلته اليوم</div></div>
+      </button>
     </div>
+  </div>
 
-    <!-- TAB 2: AI -->
-    <div id="nut-ai" style="display:none">
-
-      <!-- ACTION BUTTONS -->
-      <div class="card">
-        <div class="card-title">ماذا تريد؟</div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="ai-action-btn" onclick="aiQuickAction('analyze_meal')">
-            <span class="ai-action-icon">🍽️</span>
-            <div><div>حلّل وجبتي</div><div class="ai-action-desc">أخبرني ايش راح تاكل وأقيّم لك</div></div>
-          </button>
-          <button class="ai-action-btn" onclick="aiQuickAction('scan_product')">
-            <span class="ai-action-icon">📸</span>
-            <div><div>صوّر منتج</div><div class="ai-action-desc">ارفع صورة المنتج وأقرأ لك المكونات</div></div>
-          </button>
-          <button class="ai-action-btn" onclick="aiQuickAction('suggest_meal')">
-            <span class="ai-action-icon">💡</span>
-            <div><div>اقترح لي وجبة</div><div class="ai-action-desc">قولي ايش عندك وأسوي لك وجبة محسوبة</div></div>
-          </button>
-          <button class="ai-action-btn" onclick="aiQuickAction('daily_review')">
-            <span class="ai-action-icon">📊</span>
-            <div><div>راجع يومي الغذائي</div><div class="ai-action-desc">أقيّم كل ما أكلته اليوم</div></div>
-          </button>
-        </div>
-      </div>
-
-      <!-- IMAGE UPLOAD -->
-      <div class="card" id="ai-photo-card" style="display:none">
-        <div class="card-title">ارفع صورة المنتج</div>
-        <div class="photo-upload-trigger" onclick="document.getElementById('ai-photo-input').click()">
-          <div style="font-size:28px;margin-bottom:6px">📸</div>
-          <div>اضغط لاختيار صورة</div>
-        </div>
-        <input type="file" id="ai-photo-input" accept="image/*" style="display:none" onchange="handleAiPhoto(this)">
-        <div id="ai-photo-preview" style="display:none;margin-top:10px">
-          <img id="ai-photo-img" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover">
-        </div>
-      </div>
-
-      <!-- CHAT -->
-      <div class="card">
-        <div class="card-title">المحادثة</div>
-        <div class="ai-chat-wrap" id="ai-chat"></div>
-        <div class="ai-input-row">
-          <textarea class="ai-input" id="ai-input" placeholder="اكتب هنا..." rows="1" onkeydown="aiKeyDown(event)"></textarea>
-          <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
-        </div>
-      </div>
-
+  <!-- IMAGE UPLOAD -->
+  <div class="card" id="ai-photo-card" style="display:none">
+    <div class="card-title">ارفع صورة المنتج</div>
+    <div class="photo-upload-trigger" onclick="document.getElementById('ai-photo-input').click()">
+      <div style="font-size:28px;margin-bottom:6px">📸</div>
+      <div>اضغط لاختيار صورة</div>
     </div>
+    <input type="file" id="ai-photo-input" accept="image/*" style="display:none" onchange="handleAiPhoto(this)">
+    <div id="ai-photo-preview" style="display:none;margin-top:10px">
+      <img id="ai-photo-img" style="width:100%;border-radius:8px;max-height:180px;object-fit:cover">
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="card">
+    <div class="card-title">المحادثة</div>
+    <div class="ai-chat-wrap" id="ai-chat"></div>
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="ai-input" placeholder="اكتب هنا..." rows="1" onkeydown="aiKeyDown(event)"></textarea>
+      <button class="ai-send-btn" onclick="sendAiMessage()">➤</button>
+    </div>
+  </div>
+
+</div>
+```
+
   </div>
 
   <div id="sec-supplements" class="section">
@@ -491,98 +498,100 @@ body.logged-in #app{display:block;padding-bottom:calc(70px + env(safe-area-inset
     <div class="card"><div class="card-title">الماء اليومي 💧</div><div style="font-size:13px;color:var(--muted);line-height:2.2"><div>🌅 الاستيقاظ — <b style="color:var(--text)">500ml</b></div><div>🍳 الإفطار — <b style="color:var(--text)">250ml</b></div><div>🏋️ قبل التمرين — <b style="color:var(--text)">500ml</b></div><div>💦 أثناء التمرين — <b style="color:var(--text)">500ml+</b></div><div>🥤 بعد التمرين — <b style="color:var(--text)">500ml</b></div><div>🌙 باقي اليوم — <b style="color:var(--text)">750ml</b></div><div style="margin-top:8px;padding:8px;background:rgba(79,142,247,0.08);border-radius:8px;color:var(--accent)">المجموع: <b>3.5L أيام التمرين</b></div></div></div>
   </div>
 
-
   <div id="sec-photos" class="section">
     <div class="section-title">ألبوم <span>التطور</span></div>
 
-    <!-- ADD SESSION -->
-    <div class="card">
-      <div class="card-title">جلسة تصوير جديدة</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">ارفع 3 صور — أمام، جانب، خلف</div>
+```
+<!-- ADD SESSION -->
+<div class="card">
+  <div class="card-title">جلسة تصوير جديدة</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:12px">ارفع 3 صور — أمام، جانب، خلف</div>
 
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
-        <div>
-          <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">أمام</div>
-          <div class="photo-upload-slot" id="slot-front" onclick="document.getElementById('input-front').click()">
-            <div class="slot-icon">📸</div>
-            <div class="slot-label">اختر</div>
-            <img id="prev-front" style="display:none">
-          </div>
-          <input type="file" id="input-front" accept="image/*" style="display:none" onchange="previewSlot('front',this)">
-        </div>
-        <div>
-          <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">جانب</div>
-          <div class="photo-upload-slot" id="slot-side" onclick="document.getElementById('input-side').click()">
-            <div class="slot-icon">📸</div>
-            <div class="slot-label">اختر</div>
-            <img id="prev-side" style="display:none">
-          </div>
-          <input type="file" id="input-side" accept="image/*" style="display:none" onchange="previewSlot('side',this)">
-        </div>
-        <div>
-          <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">خلف</div>
-          <div class="photo-upload-slot" id="slot-back" onclick="document.getElementById('input-back').click()">
-            <div class="slot-icon">📸</div>
-            <div class="slot-label">اختر</div>
-            <img id="prev-back" style="display:none">
-          </div>
-          <input type="file" id="input-back" accept="image/*" style="display:none" onchange="previewSlot('back',this)">
-        </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+    <div>
+      <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">أمام</div>
+      <div class="photo-upload-slot" id="slot-front" onclick="document.getElementById('input-front').click()">
+        <div class="slot-icon">📸</div>
+        <div class="slot-label">اختر</div>
+        <img id="prev-front" style="display:none">
       </div>
-
-      <div class="stats-grid">
-        <div class="stat-input-wrap"><div class="stat-input-label">الوزن (kg)</div><input class="stat-input" id="p-weight" type="number" step="0.1" placeholder="83.0"></div>
-        <div class="stat-input-wrap"><div class="stat-input-label">دهون %</div><input class="stat-input" id="p-fat" type="number" step="0.1" placeholder="28.0"></div>
-        <div class="stat-input-wrap"><div class="stat-input-label">عضل kg</div><input class="stat-input" id="p-muscle" type="number" step="0.1" placeholder="56.7"></div>
-        <div class="stat-input-wrap"><div class="stat-input-label">دهون حشوي</div><input class="stat-input" id="p-visceral" type="number" step="0.1" placeholder="11"></div>
-      </div>
-      <div class="stat-input-wrap" style="margin-bottom:12px"><div class="stat-input-label">ملاحظة</div><input class="stat-input" id="p-note" type="text" placeholder="الشهر الأول..."></div>
-      <button class="btn" id="upload-btn" onclick="uploadSession()">📤 رفع الجلسة</button>
+      <input type="file" id="input-front" accept="image/*" style="display:none" onchange="previewSlot('front',this)">
     </div>
-
-    <!-- ALBUM -->
-    <div class="card">
-      <div class="card-title">
-        <span>الجلسات</span>
-        <span id="photos-count" class="badge badge-blue"></span>
+    <div>
+      <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">جانب</div>
+      <div class="photo-upload-slot" id="slot-side" onclick="document.getElementById('input-side').click()">
+        <div class="slot-icon">📸</div>
+        <div class="slot-label">اختر</div>
+        <img id="prev-side" style="display:none">
       </div>
-      <div id="sessions-list"></div>
+      <input type="file" id="input-side" accept="image/*" style="display:none" onchange="previewSlot('side',this)">
     </div>
-
-    <!-- COMPARE -->
-    <div class="card">
-      <div class="card-title">مقارنة جلستين</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-        <div>
-          <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">الجلسة الأولى</div>
-          <div class="compare-session-slot" id="cs-before" onclick="pickSession('before')">
-            <div style="font-size:24px">📅</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">اختر جلسة</div>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">الجلسة الثانية</div>
-          <div class="compare-session-slot" id="cs-after" onclick="pickSession('after')">
-            <div style="font-size:24px">📅</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">اختر جلسة</div>
-          </div>
-        </div>
+    <div>
+      <div style="font-size:11px;color:var(--accent);font-weight:700;text-align:center;margin-bottom:6px">خلف</div>
+      <div class="photo-upload-slot" id="slot-back" onclick="document.getElementById('input-back').click()">
+        <div class="slot-icon">📸</div>
+        <div class="slot-label">اختر</div>
+        <img id="prev-back" style="display:none">
       </div>
-      <div id="compare-result" style="display:none">
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px" id="compare-photos-before"></div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px" id="compare-photos-after"></div>
-        <div id="diff-stats" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.2);border-radius:10px;padding:12px;font-size:13px;text-align:center;line-height:2"></div>
+      <input type="file" id="input-back" accept="image/*" style="display:none" onchange="previewSlot('back',this)">
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-input-wrap"><div class="stat-input-label">الوزن (kg)</div><input class="stat-input" id="p-weight" type="number" step="0.1" placeholder="83.0"></div>
+    <div class="stat-input-wrap"><div class="stat-input-label">دهون %</div><input class="stat-input" id="p-fat" type="number" step="0.1" placeholder="28.0"></div>
+    <div class="stat-input-wrap"><div class="stat-input-label">عضل kg</div><input class="stat-input" id="p-muscle" type="number" step="0.1" placeholder="56.7"></div>
+    <div class="stat-input-wrap"><div class="stat-input-label">دهون حشوي</div><input class="stat-input" id="p-visceral" type="number" step="0.1" placeholder="11"></div>
+  </div>
+  <div class="stat-input-wrap" style="margin-bottom:12px"><div class="stat-input-label">ملاحظة</div><input class="stat-input" id="p-note" type="text" placeholder="الشهر الأول..."></div>
+  <button class="btn" id="upload-btn" onclick="uploadSession()">📤 رفع الجلسة</button>
+</div>
+
+<!-- ALBUM -->
+<div class="card">
+  <div class="card-title">
+    <span>الجلسات</span>
+    <span id="photos-count" class="badge badge-blue"></span>
+  </div>
+  <div id="sessions-list"></div>
+</div>
+
+<!-- COMPARE -->
+<div class="card">
+  <div class="card-title">مقارنة جلستين</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+    <div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">الجلسة الأولى</div>
+      <div class="compare-session-slot" id="cs-before" onclick="pickSession('before')">
+        <div style="font-size:24px">📅</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">اختر جلسة</div>
       </div>
     </div>
-
-    <!-- SESSION PICKER MODAL -->
-    <div class="session-picker" id="session-picker">
-      <div class="session-picker-box">
-        <div style="font-size:15px;font-weight:700;margin-bottom:12px">اختر جلسة</div>
-        <div id="session-picker-list"></div>
-        <button class="btn secondary" style="margin-top:10px" onclick="closeSessionPicker()">إلغاء</button>
+    <div>
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:6px;font-weight:600">الجلسة الثانية</div>
+      <div class="compare-session-slot" id="cs-after" onclick="pickSession('after')">
+        <div style="font-size:24px">📅</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">اختر جلسة</div>
       </div>
     </div>
+  </div>
+  <div id="compare-result" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px" id="compare-photos-before"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px" id="compare-photos-after"></div>
+    <div id="diff-stats" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.2);border-radius:10px;padding:12px;font-size:13px;text-align:center;line-height:2"></div>
+  </div>
+</div>
+
+<!-- SESSION PICKER MODAL -->
+<div class="session-picker" id="session-picker">
+  <div class="session-picker-box">
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px">اختر جلسة</div>
+    <div id="session-picker-list"></div>
+    <button class="btn secondary" style="margin-top:10px" onclick="closeSessionPicker()">إلغاء</button>
+  </div>
+</div>
+```
+
   </div>
 
   <div class="bottom-nav">  <div class="bottom-nav">
@@ -1088,5 +1097,6 @@ async function sendToAi(userText, photoBase64, isSystem) {
 function showToast(msg,isError){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(isError?' error':'');setTimeout(function(){t.classList.remove('show');},2000);}
 window.addEventListener('load',function(){loadUser2Card();});
 </script>
+
 </body>
 </html>
